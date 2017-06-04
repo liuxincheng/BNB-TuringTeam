@@ -5,10 +5,15 @@ IMPLEMENT(CBnbApp)
 	CBnbApp::CBnbApp()
 {
 	m_seclectScene = MAIN_SCENE;
+	isKey_stopMusic = false;
+
+	playMusic = NULL;
 }
 
 CBnbApp::~CBnbApp()
 {
+	delete playMusic;
+	playMusic = NULL;
 }
 
 void CBnbApp::OnCreateGame()
@@ -17,6 +22,17 @@ void CBnbApp::OnCreateGame()
 	mainScene.MainSceneInit(m_hIns);
 	twoGameScene.GameSceneInit(m_hIns);
 	helpScene.HelpSceneInit(m_hIns);
+
+	// 播放相应背景音乐
+	playMusic = new CPlayMusic;
+	if (playMusic != NULL)
+	{
+		this->PlayBackMusic();
+	}
+	else
+	{
+		MessageBox( NULL, TEXT("音乐加载失败!"), TEXT("提示"), MB_OK | MB_ICONERROR );
+	}
 }
 
 
@@ -74,7 +90,28 @@ void CBnbApp::OnKeyDown(WPARAM nKey)
 			// 切换回主场景
 			m_seclectScene = MAIN_SCENE;
 			this->OnGameDraw();
+
+			// 播放相应背景音乐
+			if (!this->isKey_stopMusic)
+			{
+				this->PlayBackMusic();
+			}
 		}
+		break;
+
+	// F8键 背景音乐开关
+	case VK_F8:
+		if (this->isKey_stopMusic)
+		{
+			playMusic = new CPlayMusic;
+			this->isKey_stopMusic = false;
+		}
+
+		else
+		{
+			this->isKey_stopMusic = true;
+		}
+		this->PlayBackMusic();
 		break;
 	}
 }
@@ -163,6 +200,45 @@ void CBnbApp::ChangeScene()
 		}
 	}
 
+	// 主场景进去帮助场景，背景音乐不变
+	if (this->m_seclectScene != HLEP_GAME_SCENE && (!this->isKey_stopMusic))
+	{
+		this->PlayBackMusic();
+	}
+
 	// 重绘
 	this->OnGameDraw();
+}
+
+void CBnbApp::PlayBackMusic()
+{
+	// F8键按下 播放或停止背景音乐
+	if (this->isKey_stopMusic)
+	{
+		if(!playMusic->isStop)
+		{
+			playMusic->SotpBackMusic();
+
+			// 删除播放音乐对象
+			delete playMusic;
+			playMusic = NULL;
+		}
+		else
+		{
+			if (playMusic != NULL)
+			{
+				if (this->m_seclectScene == ONE_GAME_SCENE) playMusic->PlayBackMusic(ONEGAME_BACK_MUSIC);
+				else if(this->m_seclectScene == TWO_GAME_SCENE) playMusic->PlayBackMusic(TWOGAME_BACK_MUSIC);
+				else playMusic->PlayBackMusic(MAIN_BACK_MUSIC);
+			}
+		}
+	}
+
+	// F8键未按下 根据场景播放不同背景音乐
+	else
+	{
+		if (this->m_seclectScene == ONE_GAME_SCENE) playMusic->PlayBackMusic(ONEGAME_BACK_MUSIC);
+		else if(this->m_seclectScene == TWO_GAME_SCENE) playMusic->PlayBackMusic(TWOGAME_BACK_MUSIC);
+		else playMusic->PlayBackMusic(MAIN_BACK_MUSIC);
+	}	
 }

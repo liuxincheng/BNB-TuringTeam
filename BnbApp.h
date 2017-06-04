@@ -22,6 +22,7 @@
 #include "MainScene.h"
 #include "TwoGameScene.h"
 #include "HelpScene.h"
+#include "PlayMusic.h"
 
 /*
 ** 场景标志：主场景、单人游戏场景、双人游戏场景、帮助场景
@@ -40,6 +41,7 @@ public:
 	CMainScene mainScene;
 	CTwoGameScene twoGameScene;
 	CHelpScene helpScene;
+	CPlayMusic* playMusic;
 public:
 	// 重写父类函数
 	virtual void OnCreateGame();
@@ -55,9 +57,17 @@ public:
 	*/
 	void ChangeScene();
 
+	/*
+	** 播放与暂停背景音乐函数：按键F8及切换不同场景调用
+	*/
+	void PlayBackMusic();
+
 private:
 	// 场景标记: 判断当前处于哪个场景，不同场景不同操作 默认主场景（CMainScene mainScene）
 	SeclectScene m_seclectScene;
+
+	// 标记位： 当F8停止音乐时，切换场景后也不会播放音乐，直至F8打开音乐
+	bool isKey_stopMusic;
 };
 
 #endif // !CBNBAPP_H_
