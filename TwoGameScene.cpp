@@ -1,6 +1,5 @@
 #include "TwoGameScene.h"
 
-
 CTwoGameScene::CTwoGameScene()
 {
 	m_bitmap_gameBack = NULL;
@@ -8,7 +7,6 @@ CTwoGameScene::CTwoGameScene()
 	m_bitmap_quit_select = NULL;
 	m_isSelect = false;
 }
-
 
 CTwoGameScene::~CTwoGameScene()
 {
@@ -25,7 +23,11 @@ void CTwoGameScene::GameSceneInit(HINSTANCE hIns)
 	m_bitmap_gameBack = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_GAME_BACK));
 	m_bitmap_quit = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_QUIT_GAME));
 	m_bitmap_quit_select = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_QUIT_GAME_SELECT));
+
+	// 初始化地图
+	gameMap.MapInit(hIns);
 }
+
 void CTwoGameScene::GameSceneShow(HDC hdc)
 {
 	HDC hdcMem = CreateCompatibleDC(hdc);
@@ -43,6 +45,9 @@ void CTwoGameScene::GameSceneShow(HDC hdc)
 
 	BitBlt(hdc,650,556,130,30,hdcMem,0,0,SRCCOPY);
 	DeleteDC(hdcMem);
+
+	// 地图显示
+	gameMap.MapShow(hdc);
 }
 
 void CTwoGameScene::MouseMove(POINT point)

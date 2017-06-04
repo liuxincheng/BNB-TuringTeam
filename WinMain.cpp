@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <time.h>
 #include "CGameCtrl.h"
+#include "resource.h"
 
 #define BG_WIDTH 815
 #define BG_HIGHT 638
@@ -35,7 +36,7 @@ int CALLBACK WinMain(
 	wndClassEx.cbClsExtra = 0;
 	wndClassEx.cbWndExtra = 0;
 	wndClassEx.hInstance = hInstance;
-	wndClassEx.hIcon = LoadIcon(hInstance, NULL);
+	wndClassEx.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(BNB_ICON));
 	wndClassEx.hIconSm = NULL;
 	wndClassEx.hCursor = LoadCursor( hInstance, NULL);
 	wndClassEx.hbrBackground = hBrush;

@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClInclude Include="BnbApp.h" />
     <ClInclude Include="CGameCtrl.h" />
+    <ClInclude Include="GameMap.h" />
     <ClInclude Include="HelpScene.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="PlayMusic.h" />
@@ -87,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BnbApp.cpp" />
+    <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="HelpScene.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="PlayMusic.cpp" />
@@ -99,7 +101,9 @@
   <ItemGroup>
     <Image Include="images\gameBack.bmp" />
     <Image Include="images\help.bmp" />
+    <Image Include="images\icon.ico" />
     <Image Include="images\mainBack.bmp" />
+    <Image Include="images\road.bmp" />
     <Image Include="images\单人游戏.bmp" />
     <Image Include="images\单人游戏选中.bmp" />
     <Image Include="images\双人游戏.bmp" />

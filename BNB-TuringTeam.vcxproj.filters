@@ -39,6 +39,9 @@
     <ClInclude Include="PlayMusic.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="GameMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -57,6 +60,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PlayMusic.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,6 +115,12 @@
       <Filter>资源文件</Filter>
     </Image>
     <Image Include="images\mainBack.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\road.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\icon.ico">
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>

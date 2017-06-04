@@ -18,12 +18,16 @@
 #define CTWOGAMESCENE_H_
 
 #include "Sys.h"
+#include "GameMap.h"
 
 class CTwoGameScene
 {
 public:
 	CTwoGameScene();
 	~CTwoGameScene();
+
+	// µØÍ¼
+	CGameMap gameMap;
 public:
 	void GameSceneInit(HINSTANCE hIns);
 	void GameSceneShow(HDC hdc);
