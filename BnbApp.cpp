@@ -24,23 +24,32 @@ void CBnbApp::OnGameDraw()
 {
 	HDC hdc = GetDC(m_hMainWnd);
 
+	// 解决闪屏问题
+	HDC hdcMem = ::CreateCompatibleDC(hdc);
+	HBITMAP hBitmap = ::CreateCompatibleBitmap(hdc,800,600);
+	SelectObject(hdcMem,hBitmap);
+
 	// 绘图：不同场景
 	if(this->m_seclectScene == ONE_GAME_SCENE)
 	{
-		twoGameScene.GameSceneShow(hdc);
+		twoGameScene.GameSceneShow(hdcMem);
 	}
 	else if (this->m_seclectScene == TWO_GAME_SCENE)
 	{
-		twoGameScene.GameSceneShow(hdc);
+		twoGameScene.GameSceneShow(hdcMem);
 	}
 	else if (this->m_seclectScene == HLEP_GAME_SCENE)
 	{
-		helpScene.HelpSceneShow(hdc);
+		helpScene.HelpSceneShow(hdcMem);
 	}
 	else
 	{
-		mainScene.MainSceneShow(hdc);
+		mainScene.MainSceneShow(hdcMem);
 	}
+
+	BitBlt(hdc,0,0,800,600,hdcMem,0,0,SRCCOPY);
+	DeleteDC(hdcMem);
+	DeleteObject(hBitmap);
 	ReleaseDC(m_hMainWnd,hdc);
 }
 
