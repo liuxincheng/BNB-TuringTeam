@@ -76,10 +76,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BnbApp.h" />
     <ClInclude Include="CGameCtrl.h" />
+    <ClInclude Include="HelpScene.h" />
+    <ClInclude Include="MainScene.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Sys.h" />
+    <ClInclude Include="TwoGameScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BnbApp.cpp" />
+    <ClCompile Include="HelpScene.cpp" />
+    <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="TwoGameScene.cpp" />
     <ClCompile Include="WinMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BNB-TuringTeam.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\gameBack.bmp" />
+    <Image Include="images\help.bmp" />
+    <Image Include="images\mainBack.bmp" />
+    <Image Include="images\单人游戏.bmp" />
+    <Image Include="images\单人游戏选中.bmp" />
+    <Image Include="images\双人游戏.bmp" />
+    <Image Include="images\双人游戏选中.bmp" />
+    <Image Include="images\游戏帮助.bmp" />
+    <Image Include="images\游戏帮助选中.bmp" />
+    <Image Include="images\游戏退出.bmp" />
+    <Image Include="images\游戏退出选中.bmp" />
+    <Image Include="images\返回.bmp" />
+    <Image Include="images\返回选中.bmp" />
+    <Image Include="images\退出.bmp" />
+    <Image Include="images\退出选中.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

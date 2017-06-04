@@ -18,10 +18,92 @@
     <ClInclude Include="CGameCtrl.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="BnbApp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HelpScene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainScene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Sys.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TwoGameScene.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="BnbApp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="HelpScene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainScene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TwoGameScene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="BNB-TuringTeam.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="images\gameBack.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\单人游戏.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\单人游戏选中.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\返回.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\返回选中.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\双人游戏.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\双人游戏选中.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\退出.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\退出选中.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\游戏帮助.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\游戏帮助选中.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\游戏退出.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\游戏退出选中.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\help.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\mainBack.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>
