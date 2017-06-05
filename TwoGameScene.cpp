@@ -6,6 +6,8 @@ CTwoGameScene::CTwoGameScene()
 	m_bitmap_quit = NULL;
 	m_bitmap_quit_select = NULL;
 	m_isSelect = false;
+
+	m_twoGameWnd = NULL;
 }
 
 CTwoGameScene::~CTwoGameScene()
@@ -18,17 +20,23 @@ CTwoGameScene::~CTwoGameScene()
 	m_bitmap_quit_select = NULL;
 }
 
-void CTwoGameScene::GameSceneInit(HINSTANCE hIns)
+void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 {
-	m_bitmap_gameBack = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_GAME_BACK));
-	m_bitmap_quit = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_QUIT_GAME));
-	m_bitmap_quit_select = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_QUIT_GAME_SELECT));
+	m_twoGameWnd = hWnd;
+	m_bitmap_gameBack = LoadBitmap(hIns, MAKEINTRESOURCE(IDB_GAME_BACK));
+	m_bitmap_quit = LoadBitmap(hIns, MAKEINTRESOURCE(IDB_QUIT_GAME));
+	m_bitmap_quit_select = LoadBitmap(hIns, MAKEINTRESOURCE(IDB_QUIT_GAME_SELECT));
 
 	// 初始化地图
 	gameMap.MapInit(hIns);
+
+	SetTimer(m_twoGameWnd, STOPSOUND_TIMER_ID, 50, NULL);
+
+	// 游戏开始音效
+	playSound.Play(START_GAME_SOUND);
 }
 
-void CTwoGameScene::GameSceneShow(HDC hdc)
+void CTwoGameScene::TwoGameSceneShow(HDC hdc)
 {
 	HDC hdcMem = CreateCompatibleDC(hdc);
 	SelectObject(hdcMem,m_bitmap_gameBack);
@@ -59,5 +67,36 @@ void CTwoGameScene::MouseMove(POINT point)
 	else
 	{
 		m_isSelect = false;
+	}
+}
+
+void CTwoGameScene::OnKeyDown(WPARAM nKey)
+{
+	switch (nKey)
+	{
+	// 关闭音效
+	case VK_F7:
+		if (playSound.isKeyToStop) 
+		{
+			playSound.isKeyToStop = false;
+			SetTimer(m_twoGameWnd,STOPSOUND_TIMER_ID,50,NULL);
+		}
+		else 
+		{
+			playSound.isKeyToStop = true;
+			KillTimer(m_twoGameWnd,STOPSOUND_TIMER_ID);
+		}		
+		break;
+	}
+}
+
+void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
+{
+	if (nTimerID == STOPSOUND_TIMER_ID)
+	{
+		if (playSound.isPlay && (playSound.GetPos() >= playSound.GetFileLen()))
+		{
+			playSound.Stop();
+		}
 	}
 }

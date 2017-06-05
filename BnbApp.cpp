@@ -20,7 +20,7 @@ void CBnbApp::OnCreateGame()
 {
 	// 各场景初始化
 	mainScene.MainSceneInit(m_hIns);
-	twoGameScene.GameSceneInit(m_hIns);
+	twoGameScene.TwoGameSceneInit(m_hIns,m_hMainWnd);
 	helpScene.HelpSceneInit(m_hIns);
 
 	// 播放相应背景音乐
@@ -35,7 +35,6 @@ void CBnbApp::OnCreateGame()
 	}
 }
 
-
 void CBnbApp::OnGameDraw()
 {
 	HDC hdc = GetDC(m_hMainWnd);
@@ -48,11 +47,11 @@ void CBnbApp::OnGameDraw()
 	// 绘图：不同场景
 	if(this->m_seclectScene == ONE_GAME_SCENE)
 	{
-		twoGameScene.GameSceneShow(hdcMem);
+		twoGameScene.TwoGameSceneShow(hdcMem);
 	}
 	else if (this->m_seclectScene == TWO_GAME_SCENE)
 	{
-		twoGameScene.GameSceneShow(hdcMem);
+		twoGameScene.TwoGameSceneShow(hdcMem);
 	}
 	else if (this->m_seclectScene == HLEP_GAME_SCENE)
 	{
@@ -71,6 +70,10 @@ void CBnbApp::OnGameDraw()
 
 void CBnbApp::OnGameRun(WPARAM nTimerID)
 {
+	if (m_seclectScene == TWO_GAME_SCENE)
+	{
+		twoGameScene.OnTwoGameRun(nTimerID);
+	}
 }
 
 void CBnbApp::OnKeyDown(WPARAM nKey)
@@ -114,6 +117,8 @@ void CBnbApp::OnKeyDown(WPARAM nKey)
 		this->PlayBackMusic();
 		break;
 	}
+
+	twoGameScene.OnKeyDown(nKey);
 }
 
 void CBnbApp::OnLButtonDown(POINT point)

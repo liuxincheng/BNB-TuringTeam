@@ -19,3 +19,6 @@ using namespace std;
 #define GET_TOOL_SOUND     "sounds/get.wav"
 #define PUT_BUEBLE_SOUND   "sounds/put.wav"
 #define PLAYER_DIE_SOUND   "sounds/die.wav"
+
+// ¶¨Ê±Æ÷
+#define STOPSOUND_TIMER_ID       1

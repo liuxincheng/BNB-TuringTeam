@@ -82,6 +82,7 @@
     <ClInclude Include="HelpScene.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="PlayMusic.h" />
+    <ClInclude Include="PlaySound.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sys.h" />
     <ClInclude Include="TwoGameScene.h" />
@@ -92,6 +93,7 @@
     <ClCompile Include="HelpScene.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="PlayMusic.cpp" />
+    <ClCompile Include="PlaySound.cpp" />
     <ClCompile Include="TwoGameScene.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>

@@ -19,6 +19,7 @@
 
 #include "Sys.h"
 #include "GameMap.h"
+#include "PlaySound.h"
 
 class CTwoGameScene
 {
@@ -28,10 +29,13 @@ public:
 
 	// 地图
 	CGameMap gameMap;
+	CPlaySound playSound;
 public:
-	void GameSceneInit(HINSTANCE hIns);
-	void GameSceneShow(HDC hdc);
+	void TwoGameSceneInit(HINSTANCE hIns, HWND hWnd);
+	void TwoGameSceneShow(HDC hdc);
 	void MouseMove(POINT point);
+	void OnKeyDown(WPARAM nKey);
+	void OnTwoGameRun(WPARAM nTimerID);
 public:
 	/* 标记鼠标是否悬浮于退出选择框
 	** true: 鼠标在退出框上
@@ -42,6 +46,8 @@ private:
 	HBITMAP m_bitmap_gameBack;
 	HBITMAP m_bitmap_quit;
 	HBITMAP m_bitmap_quit_select;
+
+	HWND m_twoGameWnd;
 };
 
 #endif // !CTWOGAMESCENE_H_
