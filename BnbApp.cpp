@@ -7,21 +7,30 @@ IMPLEMENT(CBnbApp)
 	m_seclectScene = MAIN_SCENE;
 	isKey_stopMusic = false;
 
+	mainScene = NULL;
+	helpScene = NULL;
+	twoGameScene = NULL;
 	playMusic = NULL;
 }
 
 CBnbApp::~CBnbApp()
 {
+	delete mainScene;
+	delete twoGameScene;
+	delete helpScene;
 	delete playMusic;
+	mainScene = NULL;
+	helpScene = NULL;
+	twoGameScene = NULL;
 	playMusic = NULL;
 }
 
 void CBnbApp::OnCreateGame()
 {
 	// 各场景初始化
-	mainScene.MainSceneInit(m_hIns);
-	twoGameScene.TwoGameSceneInit(m_hIns,m_hMainWnd);
-	helpScene.HelpSceneInit(m_hIns);
+	mainScene = new CMainScene;
+	if (mainScene != NULL) mainScene->MainSceneInit(m_hIns);
+	else MessageBox(NULL, TEXT("场景加载失败"), TEXT("提示"),MB_OK | MB_ICONERROR);
 
 	// 播放相应背景音乐
 	playMusic = new CPlayMusic;
@@ -45,21 +54,21 @@ void CBnbApp::OnGameDraw()
 	SelectObject(hdcMem,hBitmap);
 
 	// 绘图：不同场景
-	if(this->m_seclectScene == ONE_GAME_SCENE)
+	if(this->m_seclectScene == ONE_GAME_SCENE && (twoGameScene != NULL))
 	{
-		twoGameScene.TwoGameSceneShow(hdcMem);
+		twoGameScene->TwoGameSceneShow(hdcMem);
 	}
-	else if (this->m_seclectScene == TWO_GAME_SCENE)
+	else if (this->m_seclectScene == TWO_GAME_SCENE && (twoGameScene != NULL))
 	{
-		twoGameScene.TwoGameSceneShow(hdcMem);
+		twoGameScene->TwoGameSceneShow(hdcMem);
 	}
-	else if (this->m_seclectScene == HLEP_GAME_SCENE)
+	else if (this->m_seclectScene == HLEP_GAME_SCENE && (helpScene != NULL))
 	{
-		helpScene.HelpSceneShow(hdcMem);
+		helpScene->HelpSceneShow(hdcMem);
 	}
 	else
 	{
-		mainScene.MainSceneShow(hdcMem);
+		mainScene->MainSceneShow(hdcMem);
 	}
 
 	BitBlt(hdc,0,0,800,600,hdcMem,0,0,SRCCOPY);
@@ -70,9 +79,9 @@ void CBnbApp::OnGameDraw()
 
 void CBnbApp::OnGameRun(WPARAM nTimerID)
 {
-	if (m_seclectScene == TWO_GAME_SCENE)
+	if (m_seclectScene == TWO_GAME_SCENE && (twoGameScene != NULL))
 	{
-		twoGameScene.OnTwoGameRun(nTimerID);
+		twoGameScene->OnTwoGameRun(nTimerID);
 	}
 }
 
@@ -85,13 +94,23 @@ void CBnbApp::OnKeyDown(WPARAM nKey)
 		if (this->m_seclectScene == TWO_GAME_SCENE || this->m_seclectScene == ONE_GAME_SCENE)
 		{
 			// 如果鼠标停留退出选项 返回主场景 需将标记位置为 false
-			if (twoGameScene.m_isSelect)
+			if (twoGameScene->m_isSelect)
 			{
-				twoGameScene.m_isSelect = false;
+				twoGameScene->m_isSelect = false;
 			}
 
 			// 切换回主场景
+			if (mainScene == NULL)
+			{
+				mainScene = new CMainScene;
+				mainScene->MainSceneInit(m_hIns);
+			}
 			m_seclectScene = MAIN_SCENE;
+
+			// 释放游戏场景对象
+			delete twoGameScene;
+			twoGameScene = NULL;
+
 			this->OnGameDraw();
 
 			// 播放相应背景音乐
@@ -118,7 +137,11 @@ void CBnbApp::OnKeyDown(WPARAM nKey)
 		break;
 	}
 
-	twoGameScene.OnKeyDown(nKey);
+	// 将按键传入游戏场景
+	if (twoGameScene != NULL)
+	{
+		twoGameScene->OnKeyDown(nKey);
+	}
 }
 
 void CBnbApp::OnLButtonDown(POINT point)
@@ -128,19 +151,32 @@ void CBnbApp::OnLButtonDown(POINT point)
 void CBnbApp::OnLButtonUp(POINT point)
 {
 	// 如果当前场景为主场景并且鼠标在可选范围内，鼠标左键才允许选择不同场景
-	if (m_seclectScene == MAIN_SCENE && (mainScene.m_seclectNum == ONE_GAME || mainScene.m_seclectNum == TWO_GAME || mainScene.m_seclectNum == HLEP_GAME || mainScene.m_seclectNum == QUIT_GAME))
+	if (m_seclectScene == MAIN_SCENE && (mainScene->m_seclectNum == ONE_GAME || mainScene->m_seclectNum == TWO_GAME || mainScene->m_seclectNum == HLEP_GAME || mainScene->m_seclectNum == QUIT_GAME))
 	{
 		this->ChangeScene();
 	}
 
 	// 如果当前场景为帮助场景并且鼠标在返回框内，鼠标左键才允许返回主场景
-	if (m_seclectScene == HLEP_GAME_SCENE && helpScene.m_isSelect)
+	if (m_seclectScene == HLEP_GAME_SCENE && helpScene->m_isSelect)
 	{
+		if (mainScene == NULL)
+		{
+			mainScene = new CMainScene;
+			mainScene->MainSceneInit(m_hIns);
+		}
+
 		m_seclectScene = MAIN_SCENE;
-		helpScene.m_isSelect = false; // 返回后将帮助场景的鼠标位置标记置为false
+		helpScene->m_isSelect = false; // 返回后将帮助场景的鼠标位置标记置为false
+
+		// 释放帮助场景对象
+		if (helpScene)
+		{
+			delete helpScene;
+			helpScene = NULL;
+		}
 	}
 
-	if ((m_seclectScene == TWO_GAME_SCENE || m_seclectScene == ONE_GAME_SCENE) && twoGameScene.m_isSelect)
+	if ((m_seclectScene == TWO_GAME_SCENE || m_seclectScene == ONE_GAME_SCENE) && twoGameScene->m_isSelect)
 	{
 		if ( MessageBox( NULL, TEXT("大人： 游戏正在进行, 确认退出么?"), \
 			TEXT("退出"), MB_OKCANCEL | MB_ICONQUESTION ) == IDOK )
@@ -158,19 +194,19 @@ void CBnbApp::OnMouseMove(POINT point)
 	//当前场景为主场景情况下，传入鼠标位置，看是否悬浮于主界面某个选项
 	if (m_seclectScene == MAIN_SCENE)
 	{
-		mainScene.MouseMove(point);
+		mainScene->MouseMove(point);
 	}
 
 	//当前场景为帮助场景情况下，传入鼠标位置，看是否悬浮于返回选项
 	if (m_seclectScene == HLEP_GAME_SCENE)
 	{
-		helpScene.MouseMove(point);
+		helpScene->MouseMove(point);
 	}
 
 	// 当前场景为游戏场景情况下，传入鼠标位置，看是否悬浮于推出选项
 	if (m_seclectScene == TWO_GAME_SCENE || m_seclectScene == ONE_GAME_SCENE)
 	{
-		twoGameScene.MouseMove(point);
+		twoGameScene->MouseMove(point);
 	}
 
 	// 重绘
@@ -180,19 +216,60 @@ void CBnbApp::OnMouseMove(POINT point)
 void CBnbApp::ChangeScene()
 {
 	// 鼠标点击后 根据鼠标悬浮的标记 判断应切换到哪个场景
-	if (mainScene.m_seclectNum == ONE_GAME)
+	if (mainScene->m_seclectNum == ONE_GAME)
 	{
+		if (twoGameScene == NULL)
+		{
+			twoGameScene = new CTwoGameScene;
+			twoGameScene->TwoGameSceneInit(m_hIns,m_hMainWnd);
+		}
+		
 		this->m_seclectScene = ONE_GAME_SCENE;
+
+		// 释放主场景对象
+		if (mainScene)
+		{
+			delete mainScene;
+			mainScene = NULL;
+		}
 	}
-	else if (mainScene.m_seclectNum == TWO_GAME)
+	else if (mainScene->m_seclectNum == TWO_GAME)
 	{
+		// 创建游戏场景对象并初始化
+		if (twoGameScene == NULL)
+		{
+			twoGameScene = new CTwoGameScene;
+			twoGameScene->TwoGameSceneInit(m_hIns,m_hMainWnd);
+		}
+
 		this->m_seclectScene = TWO_GAME_SCENE;
+
+		// 释放主场景对象
+		if (mainScene)
+		{
+			delete mainScene;
+			mainScene = NULL;
+		}
 	}
-	else if (mainScene.m_seclectNum == HLEP_GAME)
+	else if (mainScene->m_seclectNum == HLEP_GAME)
 	{
+		// 创建帮助场景对象并初始化
+		if (helpScene == NULL)
+		{
+			helpScene = new CHelpScene;
+			helpScene->HelpSceneInit(m_hIns);
+		}
+		
 		this->m_seclectScene = HLEP_GAME_SCENE;
+
+		// 释放主场景对象
+		if (mainScene)
+		{
+			delete mainScene;
+			mainScene = NULL;
+		}
 	}
-	else if (mainScene.m_seclectNum == QUIT_GAME)
+	else if (mainScene->m_seclectNum == QUIT_GAME)
 	{
 		if ( MessageBox( NULL, TEXT("大人： 真的不想玩了么? 请您三思啊！"), \
 			TEXT("退出"), MB_OKCANCEL | MB_ICONQUESTION ) == IDOK )
@@ -245,5 +322,5 @@ void CBnbApp::PlayBackMusic()
 		if (this->m_seclectScene == ONE_GAME_SCENE) playMusic->PlayBackMusic(ONEGAME_BACK_MUSIC);
 		else if(this->m_seclectScene == TWO_GAME_SCENE) playMusic->PlayBackMusic(TWOGAME_BACK_MUSIC);
 		else playMusic->PlayBackMusic(MAIN_BACK_MUSIC);
-	}	
+	}
 }

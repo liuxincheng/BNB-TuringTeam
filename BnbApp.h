@@ -38,9 +38,9 @@ public:
 	DECLARE()
 
 	// 加载 三个场景类： 主场景、 双人游戏场景、 帮助场景
-	CMainScene mainScene;
-	CTwoGameScene twoGameScene;
-	CHelpScene helpScene;
+	CMainScene* mainScene;
+	CTwoGameScene* twoGameScene;
+	CHelpScene* helpScene;
 	CPlayMusic* playMusic;
 public:
 	// 重写父类函数
