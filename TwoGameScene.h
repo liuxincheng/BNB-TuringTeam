@@ -20,7 +20,7 @@
 #include "Sys.h"
 #include "GameMap.h"
 #include "PlaySound.h"
-
+#include "Bubble.h"
 class CTwoGameScene
 {
 public:
@@ -34,8 +34,10 @@ public:
 	void TwoGameSceneInit(HINSTANCE hIns, HWND hWnd);
 	void TwoGameSceneShow(HDC hdc);
 	void MouseMove(POINT point);
+	void OnLButtonDown(HINSTANCE hIns,POINT point);
 	void OnKeyDown(WPARAM nKey);
 	void OnTwoGameRun(WPARAM nTimerID);
+	void CTwoGameScene::ChangeBubbleShowID();
 public:
 	/* 标记鼠标是否悬浮于退出选择框
 	** true: 鼠标在退出框上
@@ -48,6 +50,7 @@ private:
 	HBITMAP m_bitmap_quit_select;
 
 	HWND m_twoGameWnd;
+	CBubble Bubble;
 };
 
 #endif // !CTWOGAMESCENE_H_

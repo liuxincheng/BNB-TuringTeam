@@ -83,6 +83,8 @@ void CBnbApp::OnGameRun(WPARAM nTimerID)
 	{
 		twoGameScene->OnTwoGameRun(nTimerID);
 	}
+	//重绘
+	this->OnGameDraw();
 }
 
 void CBnbApp::OnKeyDown(WPARAM nKey)
@@ -146,6 +148,11 @@ void CBnbApp::OnKeyDown(WPARAM nKey)
 
 void CBnbApp::OnLButtonDown(POINT point)
 {
+	if (twoGameScene != NULL)
+	{
+		//暂时调用双人游戏的按键实现按键按下出泡泡
+		twoGameScene->OnLButtonDown(m_hIns,point);
+	}
 }
 
 void CBnbApp::OnLButtonUp(POINT point)
