@@ -162,5 +162,26 @@
     <Image Include="images\Popo.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="images\TownBlockRed.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\TownBlockYellow.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\TownBox.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\TownHouseBlue.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\TownHouseRed.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\TownTree.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\TownHouseYellow.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

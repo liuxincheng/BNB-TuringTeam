@@ -30,6 +30,13 @@ public:
 	void MapShow(HDC hdc);
 private:
 	HBITMAP m_bitmap_road;
+	HBITMAP m_bitmap_redbrick;
+	HBITMAP m_bitmap_redhouse;
+	HBITMAP m_bitmap_yellowbrick;
+	HBITMAP m_bitmap_yellowhouse;
+	HBITMAP m_bitmap_tree;
+	HBITMAP m_bitmap_box;
+	HBITMAP m_bitmap_bluehouse;
 };
 
 #endif // !CGMAEMAP_H_

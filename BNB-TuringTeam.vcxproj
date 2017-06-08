@@ -117,6 +117,13 @@
     <Image Include="images\mainBack.bmp" />
     <Image Include="images\Popo.bmp" />
     <Image Include="images\road.bmp" />
+    <Image Include="images\TownBlockRed.bmp" />
+    <Image Include="images\TownBlockYellow.bmp" />
+    <Image Include="images\TownBox.bmp" />
+    <Image Include="images\TownHouseBlue.bmp" />
+    <Image Include="images\TownHouseRed.bmp" />
+    <Image Include="images\TownHouseYellow.bmp" />
+    <Image Include="images\TownTree.bmp" />
     <Image Include="images\单人游戏.bmp" />
     <Image Include="images\单人游戏选中.bmp" />
     <Image Include="images\双人游戏.bmp" />
