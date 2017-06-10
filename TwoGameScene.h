@@ -21,6 +21,7 @@
 #include "GameMap.h"
 #include "PlaySound.h"
 #include "Bubble.h"
+#include <list>
 class CTwoGameScene
 {
 public:
@@ -29,6 +30,7 @@ public:
 
 	// 地图
 	CGameMap gameMap;
+	// 音效
 	CPlaySound playSound;
 public:
 	void TwoGameSceneInit(HINSTANCE hIns, HWND hWnd);
@@ -37,7 +39,10 @@ public:
 	void OnLButtonDown(HINSTANCE hIns,POINT point);
 	void OnKeyDown(WPARAM nKey);
 	void OnTwoGameRun(WPARAM nTimerID);
-	void CTwoGameScene::ChangeBubbleShowID();
+
+	void ChangeBubbleShowID();
+	void AllBubbleShow(HDC hdc);
+	void CreateBubble(HINSTANCE hIns,int x,int y);
 public:
 	/* 标记鼠标是否悬浮于退出选择框
 	** true: 鼠标在退出框上
@@ -50,7 +55,9 @@ private:
 	HBITMAP m_bitmap_quit_select;
 
 	HWND m_twoGameWnd;
-	CBubble Bubble;
+
+	// 泡泡链表
+	list<CBubble*> m_lstBubble;
 };
 
 #endif // !CTWOGAMESCENE_H_

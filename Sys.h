@@ -21,5 +21,5 @@ using namespace std;
 #define PLAYER_DIE_SOUND   "sounds/die.wav"
 
 // 定时器
-#define STOPSOUND_TIMER_ID       1
-#define BubbleChange_TIMER_ID       2//改变泡泡大小变化的定时器
+#define STOPSOUND_TIMER_ID          1 // 音效播完自动停止
+#define BUBBLE_CHANGE_TIMER_ID      2 // 改变泡泡大小变化

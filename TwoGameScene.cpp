@@ -31,11 +31,10 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 	gameMap.MapInit(hIns);
 	
 	SetTimer(m_twoGameWnd, STOPSOUND_TIMER_ID, 50, NULL);
+	SetTimer(m_twoGameWnd, BUBBLE_CHANGE_TIMER_ID, 200, NULL);
 
 	// 游戏开始音效
 	playSound.Play(START_GAME_SOUND);
-	//设置泡泡大小变化的定时器
-	SetTimer(m_twoGameWnd,BubbleChange_TIMER_ID,150,NULL);
 }
 
 void CTwoGameScene::TwoGameSceneShow(HDC hdc)
@@ -53,13 +52,14 @@ void CTwoGameScene::TwoGameSceneShow(HDC hdc)
 		SelectObject(hdcMem,m_bitmap_quit);
 	}
 
+	
 	BitBlt(hdc,650,556,130,30,hdcMem,0,0,SRCCOPY);
 	DeleteDC(hdcMem);
 
 	// 地图显示
 	gameMap.MapShow(hdc);
 	//泡泡显示
-	Bubble.BubbleShow(hdc);
+	this->AllBubbleShow(hdc);
 }
 
 void CTwoGameScene::MouseMove(POINT point)
@@ -104,27 +104,73 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 			playSound.Stop();
 		}
 	}
-	//通过定时器改变showid实现跳动
-	if (nTimerID == BubbleChange_TIMER_ID)
+
+	//泡泡跳动动画定时器
+	if (nTimerID == BUBBLE_CHANGE_TIMER_ID)
 	{
+		
 		this->ChangeBubbleShowID();
+		
 	}
 }
+
 void CTwoGameScene::OnLButtonDown(HINSTANCE hIns,POINT point)
 {
-	//按键按下出泡泡，鼠标出入对应的点x,y
-	Bubble.BubbleInit(hIns,point.x,point.y);
+	//按键按下出泡泡，鼠标传入对应的点x,y
+	this->CreateBubble(hIns, point.x, point.y);
 	
 }
+
 void CTwoGameScene::ChangeBubbleShowID()
 {
-	//改变泡泡的showid实现它的跳动变换
-	if(Bubble.m_nShowID == 0)
+	list<CBubble*>::iterator ite_Bubble = m_lstBubble.begin();
+	while(ite_Bubble != m_lstBubble.end())
 	{
-		Bubble.m_nShowID=2;
-	}
-	else
-	{
-		Bubble.m_nShowID--;
+		//判断跳动到第几次，五次后消失
+		if((*ite_Bubble)->m_nBubbleBj == 0)
+		{
+			delete(*ite_Bubble);
+			ite_Bubble = m_lstBubble.erase(ite_Bubble);
+
+			playSound.Play(BLAST_SOUND); // 爆炸音效
+		}
+		else
+		{
+			//改变泡泡的showid实现它的跳动变换
+			if((*ite_Bubble)->m_nShowID == 0)
+			{
+				(*ite_Bubble)->m_nShowID = 2;
+				
+			}
+			else
+			{
+				((*ite_Bubble)->m_nShowID)--;
+			}
+			((*ite_Bubble)->m_nBubbleBj)--;
+
+			ite_Bubble++;
+		}
 	}
 }
+
+void CTwoGameScene::AllBubbleShow(HDC hdc)
+{
+	list<CBubble*>::iterator ite_Bubble = m_lstBubble.begin();
+	while(ite_Bubble != m_lstBubble.end())
+	{
+		(*ite_Bubble)->BubbleShow(hdc);
+		++ite_Bubble;
+	}
+}
+
+void CTwoGameScene::CreateBubble(HINSTANCE hIns,int x,int y)
+{
+	CBubble* bubble = new CBubble;
+	bubble->BubbleInit(hIns,x,y);
+	m_lstBubble.push_back(bubble);
+
+	playSound.Play(PUT_BUEBLE_SOUND); // 放置泡泡音效
+}
+
+
+
