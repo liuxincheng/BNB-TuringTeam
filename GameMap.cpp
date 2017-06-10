@@ -1,48 +1,64 @@
 #include "GameMap.h"
 
+int CGameMap::map_type[MAP_HEIGHT][MAP_WIDTH] = 
+{
+	{No,RedHouse,RedBrick,RedHouse,RedBrick,Tree,No,Tree,No,Tree,RedBrick,BlueHouse,RedBrick,BlueHouse,No},
+	{No,No,YellowBrick,RedBrick,YellowBrick,RedBrick,No,No,No,RedBrick,YellowBrick,RedBrick,YellowBrick,No,No},
+	{No,RedHouse,RedBrick,RedHouse,RedBrick,Tree,Box,Tree,Box,Tree,RedBrick,BlueHouse,RedBrick,BlueHouse,No},
+	{YellowBrick,RedBrick,YellowBrick,RedBrick,Tree,Box,Box,RedBrick,Box,Box,Tree,RedBrick,YellowBrick,RedBrick,YellowBrick},
+	{RedBrick,Tree,RedBrick,Tree,Box,Box,Tree,No,Tree,Box,Box,Tree,RedBrick,Tree,RedBrick},
+	{YellowBrick,No,Box,No,No,Tree,RedBrick,RedBrick,RedBrick,Tree,No,No,Box,No,YellowBrick},
+	{YellowBrick,Tree,RedBrick,Tree,No,YellowBrick,No,No,No,YellowBrick,No,Tree,RedBrick,Tree,YellowBrick},
+	{YellowBrick,No,Box,No,No,Tree,RedBrick,RedBrick,RedBrick,Tree,No,No,Box,No,YellowBrick},
+	{YellowBrick,RedBrick,YellowBrick,RedBrick,Tree,Box,Box,RedBrick,Box,Box,Tree,RedBrick,YellowBrick,RedBrick,YellowBrick},
+	{No,BlueHouse,RedBrick,BlueHouse,RedBrick,Tree,Box,Tree,Box,Tree,RedBrick,YellowHouse,RedBrick,YellowHouse,No},
+	{No,No,YellowBrick,RedBrick,YellowBrick,RedBrick,No,No,No,RedBrick,YellowBrick,RedBrick,YellowBrick,No,No},
+	{No,BlueHouse,RedBrick,BlueHouse,RedBrick,Tree,No,Tree,No,Tree,RedBrick,YellowHouse,RedBrick,YellowHouse,No},
+};
+
 CGameMap::CGameMap()
 {
 	m_bitmap_road = NULL;
-	m_bitmap_redbrick=NULL;
-	m_bitmap_redhouse=NULL;
-	m_bitmap_yellowbrick=NULL;
-	m_bitmap_yellowhouse=NULL;
-	m_bitmap_tree=NULL;
-	m_bitmap_box=NULL;
-	m_bitmap_bluehouse=NULL;
+	m_bitmap_redBrick = NULL;
+	m_bitmap_redHouse = NULL;
+	m_bitmap_yellowBrick = NULL;
+	m_bitmap_yellowHouse = NULL;
+	m_bitmap_Tree = NULL;
+	m_bitmap_Box = NULL;
+	m_bitmap_blueHouse = NULL;
 }
 
 
 CGameMap::~CGameMap()
 {
 	DeleteObject(m_bitmap_road);
-	DeleteObject(m_bitmap_redbrick);
-	DeleteObject(m_bitmap_redhouse);
-	DeleteObject(m_bitmap_yellowbrick);
-	DeleteObject(m_bitmap_yellowhouse);
-	DeleteObject(m_bitmap_tree);
-	DeleteObject(m_bitmap_box);
-	DeleteObject(m_bitmap_bluehouse);
+	DeleteObject(m_bitmap_redBrick);
+	DeleteObject(m_bitmap_redHouse);
+	DeleteObject(m_bitmap_yellowBrick);
+	DeleteObject(m_bitmap_yellowHouse);
+	DeleteObject(m_bitmap_Tree);
+	DeleteObject(m_bitmap_Box);
+	DeleteObject(m_bitmap_blueHouse);
 	m_bitmap_road = NULL;
-	m_bitmap_redbrick=NULL;
-	m_bitmap_redhouse=NULL;
-	m_bitmap_yellowbrick=NULL;
-	m_bitmap_yellowhouse=NULL;
-	m_bitmap_tree=NULL;
-	m_bitmap_box=NULL;
-	m_bitmap_bluehouse=NULL;
+	m_bitmap_redBrick = NULL;
+	m_bitmap_redHouse = NULL;
+	m_bitmap_yellowBrick = NULL;
+	m_bitmap_yellowHouse = NULL;
+	m_bitmap_Tree = NULL;
+	m_bitmap_Box = NULL;
+	m_bitmap_blueHouse = NULL;
 }
 
 void CGameMap::MapInit(HINSTANCE hIns)
 {
 	m_bitmap_road = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_ROAD));
-	m_bitmap_redbrick = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_redbrick));
-	m_bitmap_redhouse = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_redhouse));
-	m_bitmap_yellowbrick = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_yellowbrick));
-	m_bitmap_yellowhouse = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_yellowhouse));
-	m_bitmap_tree = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_tree));
-	m_bitmap_box = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_box));
-	m_bitmap_bluehouse = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_bluehouse));
+	m_bitmap_redBrick = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_REDBRICK));
+	m_bitmap_redHouse = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_REDHOUSE));
+	m_bitmap_yellowBrick = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_YELLOWBRICK));
+	m_bitmap_yellowHouse = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_YELLOWHOUSE));
+	m_bitmap_Tree = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_TREE));
+	m_bitmap_Box = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_BOX));
+	m_bitmap_blueHouse = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_BLUEHOUSE));
 }
 
 void CGameMap::MapShow(HDC hdc)
@@ -50,800 +66,53 @@ void CGameMap::MapShow(HDC hdc)
 	HDC hdcMem = CreateCompatibleDC(hdc);
 	SelectObject(hdcMem,m_bitmap_road);
 	BitBlt(hdc,20,41,800,600,hdcMem,0,0,SRCCOPY);
-	int x,y=0;//x，y记录每次加载不同图片位置的坐标
-	for(int i=1;i<13;i++)
+
+	int x = 0;
+	int y = 0;
+	for (int i = 0; i < MAP_HEIGHT; i++)
 	{
-		for(int j=1;j<16;j++)
+		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			x = (j-1) * 40 +20;
-			y = (i-1) * 44 +41;
+			x = j * 40 + 20;
+			y = i * 44 + 36;
 
-			if(i==1)//第一至十二行逐行加载图片
+			if (map_type[i][j] == BlueHouse)
 			{
-				if(j==2)
-				{
-					SelectObject(hdcMem,m_bitmap_redhouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_redhouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-				if(j==5)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-
-
-				}
-				if(i==1&&j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(i==1&&j==8)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-
-				}
-				if(j==11)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_bluehouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==14)
-				{
-					SelectObject(hdcMem,m_bitmap_bluehouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-
+				SelectObject(hdcMem,m_bitmap_blueHouse);
+				TransparentBlt(hdc,x,y-14,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
 			}
-			if(i==2)
+			if (map_type[i][j] == RedHouse)
 			{
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==5)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==11)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
+				SelectObject(hdcMem,m_bitmap_redHouse);
+				TransparentBlt(hdc,x,y-14,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
 			}
-
-			if(i==3)
+			if (map_type[i][j] == YellowHouse)
 			{
-				if(j==2)
-				{
-					SelectObject(hdcMem,m_bitmap_redhouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_redhouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-
-				if(j==5)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==7)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==8)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==11)
-				{
-					SelectObject(hdcMem,m_bitmap_bluehouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_bluehouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
+				SelectObject(hdcMem,m_bitmap_yellowHouse);
+				TransparentBlt(hdc,x,y-14,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
 			}
-			if(i==4)
+			if (map_type[i][j] == RedBrick)
 			{
-				if(j==1)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==2)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==5)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==7)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==8)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==11)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
+				SelectObject(hdcMem,m_bitmap_redBrick);
+				BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
 			}
-			if(i==5)
+			if (map_type[i][j] == YellowBrick)
 			{
-				if(j==1)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==2)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==5)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==7)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==11)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==14)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==15)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
+				SelectObject(hdcMem,m_bitmap_yellowBrick);
+				BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
 			}
-			if(i==6)
+			if (map_type[i][j] == Tree)
 			{
-				if(j==1)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==7)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==15)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
+				SelectObject(hdcMem,m_bitmap_Tree);
+				TransparentBlt(hdc,x,y-28,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
 			}
-			if(i==7)
+			if (map_type[i][j] == Box)
 			{
-				if(j==1)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==2)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==14)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==15)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-			}
-			if(i==8)
-			{
-				if(j==1)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(i==9)
-				{
-					if(j==1)
-					{
-						SelectObject(hdcMem,m_bitmap_yellowbrick);
-						BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-					}
-					if(j==3)
-					{
-						SelectObject(hdcMem,m_bitmap_box);
-						BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-					}
-					if(j==6)
-					{
-						SelectObject(hdcMem,m_bitmap_tree);
-						TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-					}
-					if(j==7)
-					{
-						SelectObject(hdcMem,m_bitmap_redbrick);
-						BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-					}
-					if(j==8)
-					{
-						SelectObject(hdcMem,m_bitmap_redbrick);
-						BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-					}
-					if(j==9)
-					{
-						SelectObject(hdcMem,m_bitmap_redbrick);
-						BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-					}
-					if(j==10)
-					{
-						SelectObject(hdcMem,m_bitmap_tree);
-						TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-					}
-					if(j==13)
-					{
-						SelectObject(hdcMem,m_bitmap_box);
-						BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-					}
-					if(j==15)
-					{
-						SelectObject(hdcMem,m_bitmap_yellowbrick);
-						BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-					}
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==15)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-			}
-			if(i==9)
-			{
-				if(j==1)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==2)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==5)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==7)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==11)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==14)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==15)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-			}
-			if(i==10)
-			{
-				if(j==1)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==2)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==5)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==7)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==8)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==11)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_yellowbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-			}
-			if(i==11)
-			{
-				if(j==2)
-				{
-					SelectObject(hdcMem,m_bitmap_redhouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_redhouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-
-				if(j==5)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==7)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==8)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(j==9)
-				{
-					SelectObject(hdcMem,m_bitmap_box);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==11)
-				{
-					SelectObject(hdcMem,m_bitmap_bluehouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_bluehouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-			}
-			if(i==12)
-			{
-				if(j==2)
-				{
-					SelectObject(hdcMem,m_bitmap_redhouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-				if(j==3)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-
-				}
-				if(j==4)
-				{
-					SelectObject(hdcMem,m_bitmap_redhouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-				if(j==5)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-
-
-				}
-				if(i==1&&j==6)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-				}
-				if(i==1&&j==8)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-
-				}
-				if(j==10)
-				{
-					SelectObject(hdcMem,m_bitmap_tree);
-					TransparentBlt(hdc,x,y-23,40,67,hdcMem,0,0,40,67,RGB(255,0,255));
-
-				}
-				if(j==11)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==12)
-				{
-					SelectObject(hdcMem,m_bitmap_bluehouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
-				if(j==13)
-				{
-					SelectObject(hdcMem,m_bitmap_redbrick);
-					BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
-				}
-				if(j==14)
-				{
-					SelectObject(hdcMem,m_bitmap_bluehouse);
-					TransparentBlt(hdc,x,y-13,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
-				}
+				SelectObject(hdcMem,m_bitmap_Box);
+				BitBlt(hdc,x,y,40,44,hdcMem,0,0,SRCCOPY);
 			}
 		}
 	}
+
 	DeleteDC(hdcMem);
 }
