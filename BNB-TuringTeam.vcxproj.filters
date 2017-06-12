@@ -183,5 +183,92 @@
     <Image Include="images\TownHouseYellow.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="images\BigPopo.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Explosion.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\FastTurtle.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\FastUFO.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Gift1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Gift2.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Gift3.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Gift4.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Gift5.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Gift6.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\GiftOwl.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\GiftTurtle.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\GiftUFO.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Owl.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Player.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role1.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role1Ani.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role1Die.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role1Ride.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role1Start.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role2.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role2Ani.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role2Die.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role2Ride.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Role2Start.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\TownWindmill.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\TownWindmillAni.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\word.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\Number.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>
