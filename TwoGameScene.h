@@ -22,6 +22,7 @@
 #include "PlaySound.h"
 #include "Bubble.h"
 #include <list>
+
 class CTwoGameScene
 {
 public:
@@ -43,7 +44,9 @@ public:
 	void ChangeBubbleShowID();
 	void AllBubbleShow(HDC hdc);
 	void CreateBubble(HINSTANCE hIns,int x,int y);
-public:
+
+	void ShowTime(HDC hdc); // 倒计时显示
+public: 
 	/* 标记鼠标是否悬浮于退出选择框
 	** true: 鼠标在退出框上
 	** false: 鼠标未在退出框上
@@ -53,8 +56,10 @@ private:
 	HBITMAP m_bitmap_gameBack;
 	HBITMAP m_bitmap_quit;
 	HBITMAP m_bitmap_quit_select;
+	HBITMAP m_bitmap_timeNum;
 
 	HWND m_twoGameWnd;
+	int m_gameTime; // 倒计时时间 默认五分钟（300s）
 
 	// 泡泡链表
 	list<CBubble*> m_lstBubble;
