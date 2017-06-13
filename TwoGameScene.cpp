@@ -43,7 +43,7 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 	m_bitmap_statusInfo = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_GAMEOVER_WORD));
 	m_bitmap_win_word = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_NUM_WORD));
 
-	m_gameTime = 5;      // 倒计时计数器 300s
+	m_gameTime = 300;      // 倒计时计数器 300s
 	m_statusInfo_y = 70;   // 文字默认位置 y = 70
 	m_gameStatus = STATRT; // 游戏开始 显示游戏开始文字
 
