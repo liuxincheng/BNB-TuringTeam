@@ -270,5 +270,17 @@
     <Image Include="images\Number.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="images\ShadowBlock.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\ShadowGift.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\ShadowPopo.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="images\ShadowRole.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

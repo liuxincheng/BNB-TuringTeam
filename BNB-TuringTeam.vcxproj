@@ -143,6 +143,10 @@
     <Image Include="images\Role2Die.bmp" />
     <Image Include="images\Role2Ride.bmp" />
     <Image Include="images\Role2Start.bmp" />
+    <Image Include="images\ShadowBlock.bmp" />
+    <Image Include="images\ShadowGift.bmp" />
+    <Image Include="images\ShadowPopo.bmp" />
+    <Image Include="images\ShadowRole.bmp" />
     <Image Include="images\TownBlockRed.bmp" />
     <Image Include="images\TownBlockYellow.bmp" />
     <Image Include="images\TownBox.bmp" />

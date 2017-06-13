@@ -79,7 +79,7 @@ void CBnbApp::OnGameDraw()
 
 void CBnbApp::OnGameRun(WPARAM nTimerID)
 {
-	if (m_seclectScene == TWO_GAME_SCENE && (twoGameScene != NULL))
+	if ((m_seclectScene == TWO_GAME_SCENE || m_seclectScene == ONE_GAME_SCENE) && (twoGameScene != NULL))
 	{
 		twoGameScene->OnTwoGameRun(nTimerID);
 	}
