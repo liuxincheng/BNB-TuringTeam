@@ -50,10 +50,15 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 	// 初始化地图
 	gameMap.MapInit(hIns);
 
+	// 初始化游戏人物
+	PlayerOne.PlayerInit(hIns);
+	PlayerTwo.PlayerInit(hIns);
+
 	SetTimer(m_twoGameWnd, STOPSOUND_TIMER_ID, 50, NULL);
 	SetTimer(m_twoGameWnd, BUBBLE_CHANGE_TIMER_ID, 200, NULL);
 	SetTimer(m_twoGameWnd, GAME_TIME_TIMER_ID, 1000, NULL);
 	SetTimer(m_twoGameWnd, STATUS_INFO_TIMER_ID, 80, NULL);
+	SetTimer(m_twoGameWnd, PLAYERSTART_TIMER_ID,70, NULL);
 
 	// 游戏开始音效
 	playSound.Play(START_GAME_SOUND);
@@ -84,12 +89,16 @@ void CTwoGameScene::TwoGameSceneShow(HDC hdc)
 	this->AllBubbleShow(hdc);
 	// 倒计时
 	this->ShowTime(hdc);
+	//人物出场显示
+	PlayerOne.PlayerStartShow(hdc);
+	PlayerTwo.PlayerStartShow(hdc);
 
 	// 正常游戏过程中不调用该函数，只要游戏开始结束时启动定时器不断调用
 	if (m_gameStatus != NO_SHOW)
 	{
 		this->ShowGameStatus(hdc);
 	}
+
 }
 
 void CTwoGameScene::MouseMove(POINT point)
@@ -177,6 +186,13 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 			m_statusInfo_y -= 20;
 		}
 	}
+
+	// 玩家出场动画定时器
+	if (nTimerID == PLAYERSTART_TIMER_ID)
+	{
+		this->ChangePlayerStartShowID();
+	}
+
 }
 
 void CTwoGameScene::OnLButtonDown(HINSTANCE hIns,POINT point)
@@ -282,4 +298,22 @@ void CTwoGameScene::ShowGameStatus(HDC hdc)
 	SelectObject(hdcMem,m_bitmap_statusInfo);
 	TransparentBlt(hdc,200,m_statusInfo_y,240,80,hdcMem,0,word_y,240,80,RGB(255,0,255));
 	DeleteObject(hdcMem);
+}
+
+void CTwoGameScene::ChangePlayerStartShowID()
+{
+
+	if (PlayerOne.m_Start_nShowID == 9 && PlayerTwo.m_Start_nShowID == 9)
+	{
+
+		PlayerOne.m_Start_nShowID = 8; //玩家1
+		PlayerTwo.m_Start_nShowID = 8; //玩家2
+
+		KillTimer(m_twoGameWnd,PLAYERSTART_TIMER_ID);
+	} 
+	else
+	{
+		PlayerOne.m_Start_nShowID++;
+		PlayerTwo.m_Start_nShowID++;
+	}
 }

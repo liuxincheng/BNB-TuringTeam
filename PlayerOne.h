@@ -1,11 +1,19 @@
 #ifndef CPLAYERONE_H_
 #define CPLAYERONE_H_
 
-class CPlayerOne
+#include "player.h"
+
+class CPlayerOne :
+	public CPlayer
 {
 public:
-	CPlayerOne();
-	~CPlayerOne();
+	
+public:
+	CPlayerOne(void);
+	virtual ~CPlayerOne(void);
+public:
+	virtual void PlayerInit(HINSTANCE hIns);
+	virtual void PlayerStartShow(HDC hdc);
 };
 
 #endif // !CPLAYERONE_H_
