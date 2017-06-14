@@ -9,7 +9,8 @@ CGameMap::CGameMap()
 	m_bitmap_Tree = NULL;
 	m_bitmap_Box = NULL;
 	m_bitmap_blueHouse = NULL;
-
+	m_bitmap_windUp=NULL;
+	m_bitmap_windDown=NULL;
 	for (int i = 0; i < MAP_HEIGHT; i++)
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
@@ -28,6 +29,8 @@ CGameMap::~CGameMap()
 	DeleteObject(m_bitmap_Tree);
 	DeleteObject(m_bitmap_Box);
 	DeleteObject(m_bitmap_blueHouse);
+	DeleteObject(m_bitmap_windUp);
+	DeleteObject(m_bitmap_windDown);
 	m_bitmap_redBrick = NULL;
 	m_bitmap_redHouse = NULL;
 	m_bitmap_yellowBrick = NULL;
@@ -35,6 +38,8 @@ CGameMap::~CGameMap()
 	m_bitmap_Tree = NULL;
 	m_bitmap_Box = NULL;
 	m_bitmap_blueHouse = NULL;
+	m_bitmap_windUp=NULL;
+	m_bitmap_windDown=NULL;
 }
 
 void CGameMap::MapInit(HINSTANCE hIns)
@@ -46,7 +51,9 @@ void CGameMap::MapInit(HINSTANCE hIns)
 	m_bitmap_Tree = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_TREE));
 	m_bitmap_Box = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_BOX));
 	m_bitmap_blueHouse = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_BLUEHOUSE));
-
+	m_bitmap_windUp = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_WINDMILL_UP));
+	m_bitmap_windDown = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_WINDMILL_DOWN));
+    m_nShowID=1;
 	// 加载地图数据
 	FILE *fp = NULL;
 	fopen_s(&fp,"mapData/map_village1.txt","r");
@@ -121,9 +128,17 @@ void CGameMap::MapShow(HDC hdc)
 				SelectObject(hdcMem,m_bitmap_Box);
 				BitBlt(hdc,x,y,40,40,hdcMem,0,0,SRCCOPY);
 			}
+			if (map_type[i][j] == WIND)
+			{
+				SelectObject(hdcMem,m_bitmap_windUp);
+				TransparentBlt(hdc,260,161,120,118,hdcMem,(1-m_nShowID)*120,0,120,118,RGB(255,0,255));
+				SelectObject(hdcMem,m_bitmap_windDown);
+				TransparentBlt(hdc,260,279,120,42,hdcMem,0,0,120,42,RGB(255,0,255));
+			}
+			
 		}
 	}
-
+	
 	DeleteDC(hdcMem);
 }
 

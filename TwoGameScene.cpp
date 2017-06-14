@@ -63,7 +63,7 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 	SetTimer(m_twoGameWnd, GAME_TIME_TIMER_ID, 1000, NULL);
 	SetTimer(m_twoGameWnd, STATUS_INFO_TIMER_ID, 80, NULL);
 	SetTimer(m_twoGameWnd, PLAYERSTART_TIMER_ID,50, NULL);
-
+	SetTimer(m_twoGameWnd,WIND_TIMER_ID,300, NULL);
 	// 游戏开始音效
 	playSound.Play(START_GAME_SOUND);
 }
@@ -199,6 +199,18 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 	if (nTimerID == PLAYERSTART_TIMER_ID)
 	{
 		this->ChangePlayerStartShowID();
+	}
+	//风车转定时器
+	if (nTimerID == WIND_TIMER_ID)
+	{
+		if(gameMap.m_nShowID==1)
+		{
+			gameMap.m_nShowID=0;
+		}
+		else
+		{
+			gameMap.m_nShowID=1;
+		}
 	}
 
 }

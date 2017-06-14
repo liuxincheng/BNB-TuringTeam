@@ -26,3 +26,4 @@ using namespace std;
 #define GAME_TIME_TIMER_ID          3 // 游戏倒计时
 #define STATUS_INFO_TIMER_ID        4 // 游戏状态文字移动
 #define PLAYERSTART_TIMER_ID	    5 // 玩家开场动画定时器
+#define WIND_TIMER_ID               6 // 风车转动定时器
