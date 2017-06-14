@@ -19,7 +19,6 @@ CGameMap::CGameMap()
 	}
 }
 
-
 CGameMap::~CGameMap()
 {
 	DeleteObject(m_bitmap_redBrick);
@@ -126,4 +125,120 @@ void CGameMap::MapShow(HDC hdc)
 	}
 
 	DeleteDC(hdcMem);
+}
+
+void CGameMap::MapBlast(int i, int j, int power)
+{
+	switch (power)
+	{
+	case 1:
+		// ÅÝÅÝÍþÁ¦Îª1¸ñ
+		BlastBlock_One(i,j);
+		break;
+	case 2:
+		// ÅÝÅÝÍþÁ¦Îª2¸ñ
+		BlastBlock_One(i,j);
+		BlastBlock_Two(i,j);
+		break;
+	case 3:
+		// ÅÝÅÝÍþÁ¦Îª3¸ñ
+		BlastBlock_One(i,j);
+		BlastBlock_Two(i,j);
+		BlastBlock_Three(i,j);
+		break;
+	case 4:
+		// ÅÝÅÝÍþÁ¦Îª4¸ñ
+		BlastBlock_One(i,j);
+		BlastBlock_Two(i,j);
+		BlastBlock_Three(i,j);
+		BlastBlock_Four(i,j);
+		break;
+	default:
+		BlastBlock_One(i,j);
+		break;
+	}
+}
+
+void CGameMap::BlastBlock_One(int i, int j)
+{
+	// ÅÝÅÝ ¡ú
+	if ( i < MAP_HEIGHT - 1 && map_type[i+1][j] <= Box && map_type[i+1][j] != No)
+	{
+		map_type[i+1][j] = No;
+	}
+	// ÅÝÅÝ ¡û
+	if ( i > 0 && map_type[i-1][j] <= Box && map_type[i-1][j] != No)
+	{
+		map_type[i-1][j] = No;
+	}
+	// ÅÝÅÝ ¡ý
+	if ( j < MAP_WIDTH - 1 && map_type[i][j+1] <= Box && map_type[i][j+1] != No)
+	{
+		map_type[i][j+1] = No;
+	}
+	// ÅÝÅÝ ¡ü
+	if ( j > 0 && map_type[i][j-1] <= Box && map_type[i][j-1] != No)
+	{
+		map_type[i][j-1] = No;
+	}
+}
+
+void CGameMap::BlastBlock_Two(int i, int j)
+{
+	if ( i < MAP_HEIGHT - 2 && map_type[i+1][j] <= Box && map_type[i+2][j] <= Box && map_type[i+2][j] != No)
+	{
+		map_type[i+2][j] = No;
+	}
+	if ( i > 1 && map_type[i-1][j] <= Box && map_type[i-2][j] <= Box && map_type[i-2][j] != No)
+	{
+		map_type[i-2][j] = No;
+	}
+	if ( j < MAP_WIDTH - 2 && map_type[i][j+1] <= Box && map_type[i][j+2] <= Box && map_type[i][j+2] != No)
+	{
+		map_type[i][j+2] = No;
+	}
+	if ( j > 1 && map_type[i][j-1] <= Box && map_type[i][j-2] <= Box && map_type[i][j-2] != No)
+	{
+		map_type[i][j-2] = No;
+	}
+}
+
+void CGameMap::BlastBlock_Three(int i, int j)
+{
+	if ( i < MAP_HEIGHT - 3 && map_type[i+1][j] <= Box && map_type[i+2][j] <= Box &&  map_type[i+3][j] <= Box && map_type[i+3][j] != No)
+	{
+		map_type[i+3][j] = No;
+	}
+	if ( i > 2 && map_type[i-1][j] <= Box && map_type[i-2][j] <= Box && map_type[i-3][j] <= Box && map_type[i-3][j] != No)
+	{
+		map_type[i-3][j] = No;
+	}
+	if ( j < MAP_WIDTH - 3 && map_type[i][j+1] <= Box && map_type[i][j+2] <= Box && map_type[i][j+3] <= Box && map_type[i][j+3] != No)
+	{
+		map_type[i][j+3] = No;
+	}
+	if ( j > 2 && map_type[i][j-1] <= Box && map_type[i][j-2] <= Box && map_type[i][j-3] <= Box && map_type[i][j-3] != No)
+	{
+		map_type[i][j-3] = No;
+	}
+}
+
+void CGameMap::BlastBlock_Four(int i, int j)
+{
+	if ( i < MAP_HEIGHT - 4 && map_type[i+1][j] <= Box && map_type[i+2][j] <= Box &&  map_type[i+3][j] <= Box &&  map_type[i+4][j] <= Box && map_type[i+4][j] != No)
+	{
+		map_type[i+4][j] = No;
+	}
+	if ( i > 3 && map_type[i-1][j] <= Box && map_type[i-2][j] <= Box && map_type[i-3][j] <= Box && map_type[i-4][j] <= Box && map_type[i-4][j] != No)
+	{
+		map_type[i-4][j] = No;
+	}
+	if ( j < MAP_WIDTH - 4 && map_type[i][j+1] <= Box && map_type[i][j+2] <= Box && map_type[i][j+3] <= Box && map_type[i][j+4] <= Box && map_type[i][j+4] != No)
+	{
+		map_type[i][j+4] = No;
+	}
+	if ( j > 3 && map_type[i][j-1] <= Box && map_type[i][j-2] <= Box && map_type[i][j-3] <= Box && map_type[i][j-4] <= Box && map_type[i][j-4] != No)
+	{
+		map_type[i][j-4] = No;
+	}
 }

@@ -8,6 +8,7 @@ CBubble::CBubble()
 	m_nBubble_x = 0;
 	m_nBubble_y = 0;
 	m_nBubbleBj = 0;
+	m_nBubble_power = 1;
 }
 
 CBubble::~CBubble()
@@ -18,7 +19,7 @@ CBubble::~CBubble()
 	m_bitmap_bubble = NULL;
 }
 
-void CBubble::BubbleInit(HINSTANCE hIns, int x, int y)
+void CBubble::BubbleInit(HINSTANCE hIns, int x, int y, int power)
 {
 	m_bitmap_bubble = ::LoadBitmap(hIns, MAKEINTRESOURCE(IDB_BUBBLE));
 	m_bitmap_shadow_bubble = ::LoadBitmap(hIns, MAKEINTRESOURCE(IDB_SHADOW_BUBBLE));
@@ -26,7 +27,7 @@ void CBubble::BubbleInit(HINSTANCE hIns, int x, int y)
 	m_nBubbleBj = 16;
 	this->m_nBubble_x = x;
 	this->m_nBubble_y = y;
-
+	this->m_nBubble_power = power;
 }
 
 void CBubble::BubbleShow(HDC hdc)

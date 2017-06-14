@@ -218,8 +218,13 @@ void CTwoGameScene::ChangeBubbleShowID()
 		// 判断跳动到第几次，五次后消失
 		if((*ite_Bubble)->m_nBubbleBj == 0)
 		{
+			// 将坐标转换成对应数组下标
+			int i = ((*ite_Bubble)->m_nBubble_y - 40) / 40;
+			int j = ((*ite_Bubble)->m_nBubble_x - 20) / 40;
+			// 消除地图障碍物
+			gameMap.MapBlast(i,j,(*ite_Bubble)->m_nBubble_power);
 			// 将地图该位置置为空 即 No
-			gameMap.map_type[((*ite_Bubble)->m_nBubble_y - 40) / 40][((*ite_Bubble)->m_nBubble_x - 20) / 40] = No;
+			gameMap.map_type[i][j] = No;
 			// 删除该泡泡
 			delete(*ite_Bubble);
 			ite_Bubble = m_lstBubble.erase(ite_Bubble);
@@ -270,7 +275,7 @@ void CTwoGameScene::CreateBubble(HINSTANCE hIns,int x,int y)
 		temp_y = temp_y * 40 + 41 - 1;
 		// 创建泡泡
 		CBubble* bubble = new CBubble;
-		bubble->BubbleInit(hIns,temp_x,temp_y);
+		bubble->BubbleInit(hIns,temp_x,temp_y,1);
 		m_lstBubble.push_back(bubble);
 
 		// 放置泡泡音效
