@@ -11,6 +11,9 @@ CGameMap::CGameMap()
 	m_bitmap_blueHouse = NULL;
 	m_bitmap_windUp=NULL;
 	m_bitmap_windDown=NULL;
+
+	m_nShowID = 1;
+
 	for (int i = 0; i < MAP_HEIGHT; i++)
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
@@ -53,7 +56,9 @@ void CGameMap::MapInit(HINSTANCE hIns)
 	m_bitmap_blueHouse = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_BLUEHOUSE));
 	m_bitmap_windUp = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_WINDMILL_UP));
 	m_bitmap_windDown = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_WINDMILL_DOWN));
-    m_nShowID=1;
+
+	m_nShowID = 1;
+
 	// 加载地图数据
 	FILE *fp = NULL;
 	fopen_s(&fp,"mapData/map_village1.txt","r");

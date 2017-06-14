@@ -25,7 +25,7 @@
 #include "PlayerTwo.h"
 #include <list>
 
-enum GameStatus { NO_SHOW, STATRT, PLAYER_ONE_WIN, PLAYER_TWO_WIN, DRAW};
+enum GameStatus { NO_SHOW, STATRT, PLAYER_ONE_WIN, PLAYER_TWO_WIN, DRAW };
 
 class CTwoGameScene
 {
@@ -37,7 +37,7 @@ public:
 	CGameMap gameMap;
 	// ÒôÐ§
 	CPlaySound playSound;
-	//Íæ¼Ò
+	// Íæ¼Ò
 	CPlayerOne PlayerOne;
 	CPlayerTwo PlayerTwo;
 public:

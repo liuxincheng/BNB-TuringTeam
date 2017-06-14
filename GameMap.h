@@ -26,7 +26,7 @@
 // 地图上障碍物类型 与mapData中数据一一对应
 enum MapType
 {
-	No, R_B_, Y_B_, Box, R_H_, Y_H_, B_H_, Tree, Popo,WIND
+	No, R_B_, Y_B_, Box, R_H_, Y_H_, B_H_, Tree, Popo, WIND
 };
 
 class CGameMap
@@ -49,7 +49,7 @@ public:
 	void BlastBlock_Four(int i, int j);  // 炸第四格障碍物
 public:
 	int map_type[MAP_HEIGHT][MAP_WIDTH];
-	int m_nShowID;
+	int m_nShowID;                       // 风车转动切换图片记录ID
 private:
 	HBITMAP m_bitmap_redBrick;
 	HBITMAP m_bitmap_redHouse;
