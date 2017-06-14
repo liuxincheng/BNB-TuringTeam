@@ -64,6 +64,7 @@ public:
 	bool m_isSelect;
 private:
 	HBITMAP m_bitmap_gameBack;      // 游戏背景位图
+	HBITMAP m_bitmap_road;          // 游戏背景马路
 	HBITMAP m_bitmap_quit;          // 退出选项位图
 	HBITMAP m_bitmap_quit_select;   // 退出选项选中位图
 	HBITMAP m_bitmap_timeNum;       // 时间数字位图

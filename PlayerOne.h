@@ -3,14 +3,11 @@
 
 #include "player.h"
 
-class CPlayerOne :
-	public CPlayer
+class CPlayerOne : public CPlayer
 {
 public:
-	
-public:
-	CPlayerOne(void);
-	virtual ~CPlayerOne(void);
+	CPlayerOne();
+	virtual ~CPlayerOne();
 public:
 	virtual void PlayerInit(HINSTANCE hIns);
 	virtual void PlayerStartShow(HDC hdc);

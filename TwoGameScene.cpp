@@ -3,6 +3,7 @@
 CTwoGameScene::CTwoGameScene()
 {
 	m_bitmap_gameBack = NULL;
+	m_bitmap_road = NULL;
 	m_bitmap_quit = NULL;
 	m_bitmap_quit_select = NULL;
 	m_bitmap_timeNum = NULL;
@@ -19,6 +20,7 @@ CTwoGameScene::CTwoGameScene()
 CTwoGameScene::~CTwoGameScene()
 {
 	DeleteObject(m_bitmap_gameBack);
+	DeleteObject(m_bitmap_road);
 	DeleteObject(m_bitmap_quit);
 	DeleteObject(m_bitmap_quit_select);
 	DeleteObject(m_bitmap_timeNum);
@@ -26,6 +28,7 @@ CTwoGameScene::~CTwoGameScene()
 	DeleteObject(m_bitmap_win_word);
 
 	m_bitmap_gameBack = NULL;
+	m_bitmap_road = NULL;
 	m_bitmap_quit = NULL;
 	m_bitmap_quit_select = NULL;
 	m_bitmap_timeNum = NULL;
@@ -37,6 +40,7 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 {
 	m_twoGameWnd = hWnd;
 	m_bitmap_gameBack = LoadBitmap(hIns, MAKEINTRESOURCE(IDB_GAME_BACK));
+	m_bitmap_road = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_ROAD));
 	m_bitmap_quit = LoadBitmap(hIns, MAKEINTRESOURCE(IDB_QUIT_GAME));
 	m_bitmap_quit_select = LoadBitmap(hIns, MAKEINTRESOURCE(IDB_QUIT_GAME_SELECT));
 	m_bitmap_timeNum = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_TIME_NUMBER));
@@ -58,7 +62,7 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 	SetTimer(m_twoGameWnd, BUBBLE_CHANGE_TIMER_ID, 200, NULL);
 	SetTimer(m_twoGameWnd, GAME_TIME_TIMER_ID, 1000, NULL);
 	SetTimer(m_twoGameWnd, STATUS_INFO_TIMER_ID, 80, NULL);
-	SetTimer(m_twoGameWnd, PLAYERSTART_TIMER_ID,70, NULL);
+	SetTimer(m_twoGameWnd, PLAYERSTART_TIMER_ID,50, NULL);
 
 	// 游戏开始音效
 	playSound.Play(START_GAME_SOUND);
@@ -69,6 +73,8 @@ void CTwoGameScene::TwoGameSceneShow(HDC hdc)
 	HDC hdcMem = CreateCompatibleDC(hdc);
 	SelectObject(hdcMem,m_bitmap_gameBack);
 	BitBlt(hdc,0,0,800,600,hdcMem,0,0,SRCCOPY);
+	SelectObject(hdcMem,m_bitmap_road);
+	BitBlt(hdc,20,41,600,520,hdcMem,0,0,SRCCOPY);
 
 	// 退出按钮
 	if (m_isSelect)
@@ -83,12 +89,15 @@ void CTwoGameScene::TwoGameSceneShow(HDC hdc)
 	BitBlt(hdc,650,556,130,30,hdcMem,0,0,SRCCOPY);
 	DeleteDC(hdcMem);
 
-	// 地图显示
-	gameMap.MapShow(hdc);
 	// 泡泡显示
 	this->AllBubbleShow(hdc);
+
+	// 地图显示
+	gameMap.MapShow(hdc);
+	
 	// 倒计时
 	this->ShowTime(hdc);
+
 	//人物出场显示
 	PlayerOne.PlayerStartShow(hdc);
 	PlayerTwo.PlayerStartShow(hdc);
@@ -98,7 +107,6 @@ void CTwoGameScene::TwoGameSceneShow(HDC hdc)
 	{
 		this->ShowGameStatus(hdc);
 	}
-
 }
 
 void CTwoGameScene::MouseMove(POINT point)
@@ -197,7 +205,7 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 
 void CTwoGameScene::OnLButtonDown(HINSTANCE hIns,POINT point)
 {
-	//按键按下出泡泡，鼠标传入对应的点x,y
+	// 按键按下出泡泡，鼠标传入对应的点x,y
 	this->CreateBubble(hIns, point.x, point.y);
 
 }
@@ -207,9 +215,12 @@ void CTwoGameScene::ChangeBubbleShowID()
 	list<CBubble*>::iterator ite_Bubble = m_lstBubble.begin();
 	while(ite_Bubble != m_lstBubble.end())
 	{
-		//判断跳动到第几次，五次后消失
+		// 判断跳动到第几次，五次后消失
 		if((*ite_Bubble)->m_nBubbleBj == 0)
 		{
+			// 将地图该位置置为空 即 No
+			gameMap.map_type[((*ite_Bubble)->m_nBubble_y - 40) / 40][((*ite_Bubble)->m_nBubble_x - 20) / 40] = No;
+			// 删除该泡泡
 			delete(*ite_Bubble);
 			ite_Bubble = m_lstBubble.erase(ite_Bubble);
 
@@ -246,11 +257,25 @@ void CTwoGameScene::AllBubbleShow(HDC hdc)
 
 void CTwoGameScene::CreateBubble(HINSTANCE hIns,int x,int y)
 {
-	CBubble* bubble = new CBubble;
-	bubble->BubbleInit(hIns,x,y);
-	m_lstBubble.push_back(bubble);
+	// 将坐标转换成对应地图数组坐标
+	int temp_x = (x - 20) / 40; 
+	int temp_y = (y - 41) / 40;
+	// 判断该位置是否有障碍物 没有障碍物 允许放泡泡
+	if (gameMap.map_type[temp_y][temp_x] == No)
+	{
+		// 将该位置赋值
+		gameMap.map_type[temp_y][temp_x] = Popo;
+		// 确定泡泡位置
+		temp_x = temp_x * 40 + 20;
+		temp_y = temp_y * 40 + 41 - 1;
+		// 创建泡泡
+		CBubble* bubble = new CBubble;
+		bubble->BubbleInit(hIns,temp_x,temp_y);
+		m_lstBubble.push_back(bubble);
 
-	playSound.Play(PUT_BUEBLE_SOUND); // 放置泡泡音效
+		// 放置泡泡音效
+		playSound.Play(PUT_BUEBLE_SOUND);
+	}
 }
 
 void CTwoGameScene::ShowTime(HDC hdc)
@@ -302,15 +327,20 @@ void CTwoGameScene::ShowGameStatus(HDC hdc)
 
 void CTwoGameScene::ChangePlayerStartShowID()
 {
-
+	static int bflag = 0; // 人物开场闪烁控制位
 	if (PlayerOne.m_Start_nShowID == 9 && PlayerTwo.m_Start_nShowID == 9)
 	{
 
 		PlayerOne.m_Start_nShowID = 8; //玩家1
 		PlayerTwo.m_Start_nShowID = 8; //玩家2
 
-		KillTimer(m_twoGameWnd,PLAYERSTART_TIMER_ID);
-	} 
+		if (bflag == 4)
+		{
+			KillTimer(m_twoGameWnd,PLAYERSTART_TIMER_ID);
+			bflag = 0;
+		}
+		bflag++;
+	}
 	else
 	{
 		PlayerOne.m_Start_nShowID++;

@@ -1,10 +1,10 @@
 #include "PlayerTwo.h"
 
-CPlayerTwo::CPlayerTwo(void)
+CPlayerTwo::CPlayerTwo()
 {
 }
 
-CPlayerTwo::~CPlayerTwo(void)
+CPlayerTwo::~CPlayerTwo()
 {
 } 
 

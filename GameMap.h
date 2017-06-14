@@ -21,11 +21,12 @@
 #include "Sys.h"
 
 #define MAP_WIDTH  15
-#define MAP_HEIGHT 12
+#define MAP_HEIGHT 13
 
+// 地图上障碍物类型 与mapData中数据一一对应
 enum MapType
 {
-	No, RedBrick, YellowBrick, RedHouse, YellowHouse, BlueHouse, Tree, Box 
+	No, R_B_, Y_B_, R_H_, Y_H_, B_H_, Tree, Box, Popo
 };
 
 class CGameMap
@@ -37,9 +38,8 @@ public:
 	void MapInit(HINSTANCE hIns);
 	void MapShow(HDC hdc);
 public:
-	static int map_type[MAP_HEIGHT][MAP_WIDTH];
+	int map_type[MAP_HEIGHT][MAP_WIDTH];
 private:
-	HBITMAP m_bitmap_road;
 	HBITMAP m_bitmap_redBrick;
 	HBITMAP m_bitmap_redHouse;
 	HBITMAP m_bitmap_yellowBrick;
