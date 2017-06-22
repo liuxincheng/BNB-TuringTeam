@@ -49,21 +49,23 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 
 	m_gameTime = 300;      // 倒计时计数器 300s
 	m_statusInfo_y = 70;   // 文字默认位置 y = 70
-	m_gameStatus = STATRT; // 游戏开始 显示游戏开始文字
+	m_gameStatus = START;  // 游戏开始 显示游戏开始文字
 
 	// 初始化地图
 	gameMap.MapInit(hIns);
 
 	// 初始化游戏人物
-	PlayerOne.PlayerInit(hIns);
-	PlayerTwo.PlayerInit(hIns);
+	playerOne.PlayerInit(hIns);
+	playerTwo.PlayerInit(hIns);
 
 	SetTimer(m_twoGameWnd, STOPSOUND_TIMER_ID, 50, NULL);
 	SetTimer(m_twoGameWnd, BUBBLE_CHANGE_TIMER_ID, 200, NULL);
 	SetTimer(m_twoGameWnd, GAME_TIME_TIMER_ID, 1000, NULL);
 	SetTimer(m_twoGameWnd, STATUS_INFO_TIMER_ID, 80, NULL);
 	SetTimer(m_twoGameWnd, PLAYERSTART_TIMER_ID,50, NULL);
-	SetTimer(m_twoGameWnd,WIND_TIMER_ID,500, NULL);
+	SetTimer(m_twoGameWnd, WIND_TIMER_ID,500, NULL);
+	SetTimer(m_twoGameWnd, KEY_STATE_TIMER_ID,1, NULL);
+
 	// 游戏开始音效
 	playSound.Play(START_GAME_SOUND);
 }
@@ -94,13 +96,13 @@ void CTwoGameScene::TwoGameSceneShow(HDC hdc)
 
 	// 地图显示
 	gameMap.MapShow(hdc);
-	
+
 	// 倒计时
 	this->ShowTime(hdc);
 
 	//人物出场显示
-	PlayerOne.PlayerStartShow(hdc);
-	PlayerTwo.PlayerStartShow(hdc);
+	playerOne.PlayerShow(hdc);
+	playerTwo.PlayerShow(hdc);
 
 	// 正常游戏过程中不调用该函数，只要游戏开始结束时启动定时器不断调用
 	if (m_gameStatus != NO_SHOW)
@@ -127,7 +129,7 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 	{
 	// 关闭音效
 	case VK_F7:
-		if (playSound.isKeyToStop) 
+		if (playSound.isKeyToStop)
 		{
 			playSound.isKeyToStop = false;
 			SetTimer(m_twoGameWnd,STOPSOUND_TIMER_ID,50,NULL);
@@ -138,8 +140,10 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 			KillTimer(m_twoGameWnd,STOPSOUND_TIMER_ID);
 		}		
 		break;
-
 	}
+
+	playerOne.PlayerMove(nKey);
+	playerTwo.PlayerMove(nKey);
 }
 
 void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
@@ -207,13 +211,28 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 		if(gameMap.m_nShowID == 1) gameMap.m_nShowID = 0;
 		else gameMap.m_nShowID = 1;
 	}
+
+	//if (nTimerID == KEY_STATE_TIMER_ID)
+	//{
+	//	if (GetAsyncKeyState(VK_LEFT))
+	//	{
+	//	}
+	//	if (GetAsyncKeyState(VK_RIGHT))
+	//	{
+	//	}
+	//	if (GetAsyncKeyState(VK_UP))
+	//	{
+	//	}
+	//	if (GetAsyncKeyState(VK_DOWN))
+	//	{
+	//	}
+	//}
 }
 
 void CTwoGameScene::OnLButtonDown(HINSTANCE hIns,POINT point)
 {
 	// 按键按下出泡泡，鼠标传入对应的点x,y
 	this->CreateBubble(hIns, point.x, point.y);
-
 }
 
 void CTwoGameScene::ChangeBubbleShowID()
@@ -268,24 +287,27 @@ void CTwoGameScene::AllBubbleShow(HDC hdc)
 
 void CTwoGameScene::CreateBubble(HINSTANCE hIns,int x,int y)
 {
-	// 将坐标转换成对应地图数组坐标
-	int temp_x = (x - 20) / 40; 
-	int temp_y = (y - 41) / 40;
-	// 判断该位置是否有障碍物 没有障碍物 允许放泡泡
-	if (gameMap.map_type[temp_y][temp_x] == No)
+	if (x >= 20 && x <= 620 && y >= 41 && y <= 561)
 	{
-		// 将该位置赋值
-		gameMap.map_type[temp_y][temp_x] = Popo;
-		// 确定泡泡位置
-		temp_x = temp_x * 40 + 20;
-		temp_y = temp_y * 40 + 41 - 1;
-		// 创建泡泡
-		CBubble* bubble = new CBubble;
-		bubble->BubbleInit(hIns,temp_x,temp_y,1);
-		m_lstBubble.push_back(bubble);
+		// 将坐标转换成对应地图数组坐标
+		int temp_x = (x - 20) / 40; 
+		int temp_y = (y - 41) / 40;
+		// 判断该位置是否有障碍物 没有障碍物 允许放泡泡
+		if (gameMap.map_type[temp_y][temp_x] == No)
+		{
+			// 将该位置赋值
+			gameMap.map_type[temp_y][temp_x] = Popo;
+			// 确定泡泡位置
+			temp_x = temp_x * 40 + 20;
+			temp_y = temp_y * 40 + 41 - 1;
+			// 创建泡泡
+			CBubble* bubble = new CBubble;
+			bubble->BubbleInit(hIns,temp_x,temp_y,1);
+			m_lstBubble.push_back(bubble);
 
-		// 放置泡泡音效
-		playSound.Play(PUT_BUEBLE_SOUND);
+			// 放置泡泡音效
+			playSound.Play(PUT_BUEBLE_SOUND);
+		}
 	}
 }
 
@@ -339,22 +361,24 @@ void CTwoGameScene::ShowGameStatus(HDC hdc)
 void CTwoGameScene::ChangePlayerStartShowID()
 {
 	static int bflag = 0; // 人物开场闪烁控制位
-	if (PlayerOne.m_Start_nShowID == 9 && PlayerTwo.m_Start_nShowID == 9)
+	if (playerOne.m_Start_nShowID == 9 && playerTwo.m_Start_nShowID == 9)
 	{
 
-		PlayerOne.m_Start_nShowID = 8; //玩家1
-		PlayerTwo.m_Start_nShowID = 8; //玩家2
+		playerOne.m_Start_nShowID = 8; //玩家1
+		playerTwo.m_Start_nShowID = 8; //玩家2
 
 		if (bflag == 4)
 		{
 			KillTimer(m_twoGameWnd,PLAYERSTART_TIMER_ID);
 			bflag = 0;
+			playerOne.m_player_status = MOVE;
+			playerTwo.m_player_status = MOVE;
 		}
 		bflag++;
 	}
 	else
 	{
-		PlayerOne.m_Start_nShowID++;
-		PlayerTwo.m_Start_nShowID++;
+		playerOne.m_Start_nShowID++;
+		playerTwo.m_Start_nShowID++;
 	}
 }

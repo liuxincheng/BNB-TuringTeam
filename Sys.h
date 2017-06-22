@@ -25,5 +25,7 @@ using namespace std;
 #define BUBBLE_CHANGE_TIMER_ID      2 // 改变泡泡大小变化
 #define GAME_TIME_TIMER_ID          3 // 游戏倒计时
 #define STATUS_INFO_TIMER_ID        4 // 游戏状态文字移动
-#define PLAYERSTART_TIMER_ID	    5 // 玩家开场动画定时器
-#define WIND_TIMER_ID               6 // 风车转动定时器
+#define PLAYERSTART_TIMER_ID	    5 // 玩家开场动画
+#define WIND_TIMER_ID               6 // 风车转动
+#define KEY_STATE_TIMER_ID          7 // 监测按键
+#define PLAYER_MOVE_TIMER_ID        8 // 玩家移动

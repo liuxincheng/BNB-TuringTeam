@@ -81,6 +81,7 @@
     <ClInclude Include="CGameCtrl.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameProps.h" />
+    <ClInclude Include="GameTools.h" />
     <ClInclude Include="HelpScene.h" />
     <ClInclude Include="MainScene.h" />
     <ClInclude Include="Player.h" />
@@ -97,6 +98,7 @@
     <ClCompile Include="Bubble.cpp" />
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameProps.cpp" />
+    <ClCompile Include="GameTools.cpp" />
     <ClCompile Include="HelpScene.cpp" />
     <ClCompile Include="MainScene.cpp" />
     <ClCompile Include="Player.cpp" />

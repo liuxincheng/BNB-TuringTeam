@@ -23,9 +23,8 @@
 #include "Bubble.h"
 #include "PlayerOne.h"
 #include "PlayerTwo.h"
-#include <list>
 
-enum GameStatus { NO_SHOW, STATRT, PLAYER_ONE_WIN, PLAYER_TWO_WIN, DRAW };
+enum GameStatus { NO_SHOW, START, PLAYER_ONE_WIN, PLAYER_TWO_WIN, DRAW };
 
 class CTwoGameScene
 {
@@ -38,8 +37,8 @@ public:
 	// “Ù–ß
 	CPlaySound playSound;
 	// ÕÊº“
-	CPlayerOne PlayerOne;
-	CPlayerTwo PlayerTwo;
+	CPlayerOne playerOne;
+	CPlayerTwo playerTwo;
 public:
 	void TwoGameSceneInit(HINSTANCE hIns, HWND hWnd);
 	void TwoGameSceneShow(HDC hdc);

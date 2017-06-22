@@ -2,17 +2,25 @@
 
 CPlayer::CPlayer(void)
 {
-	m_hBmpPlayer = NULL;
+	m_hBmpPlayerStart = NULL;
+	m_hBmpPlayerMove = NULL;
+	m_hBmpPlayerDie = NULL;
 	m_hBmpPlayerShadow = NULL;
 	m_Start_nShowID = 0;
 	m_player_x = 0;
 	m_player_y = 0;
+	m_player_status = BEGIN;
+	m_direction = DOWN;
 }
 
 CPlayer::~CPlayer(void)
 {
-	DeleteObject(m_hBmpPlayer);
+	DeleteObject(m_hBmpPlayerStart);
+	DeleteObject(m_hBmpPlayerMove);
+	DeleteObject(m_hBmpPlayerDie);
 	DeleteObject(m_hBmpPlayerShadow);
-	m_hBmpPlayer = NULL;
+	m_hBmpPlayerStart = NULL;
+	m_hBmpPlayerMove = NULL;
+	m_hBmpPlayerDie = NULL;
 	m_hBmpPlayerShadow = NULL;
 }

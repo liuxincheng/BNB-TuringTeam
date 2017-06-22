@@ -10,7 +10,8 @@ public:
 	virtual ~CPlayerOne();
 public:
 	virtual void PlayerInit(HINSTANCE hIns);
-	virtual void PlayerStartShow(HDC hdc);
+	virtual void PlayerShow(HDC hdc);
+	virtual void PlayerMove(int FX);
 };
 
 #endif // !CPLAYERONE_H_
