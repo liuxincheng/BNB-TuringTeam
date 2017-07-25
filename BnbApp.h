@@ -48,6 +48,7 @@ public:
 	virtual void OnGameDraw();
 	virtual void OnGameRun(WPARAM nTimerID);
 	virtual void OnKeyDown(WPARAM nKey);
+	virtual void OnKeyUp(WPARAM nKey);
 	virtual void OnLButtonDown(POINT point);
 	virtual void OnLButtonUp(POINT point);
 	virtual void OnMouseMove(POINT point);

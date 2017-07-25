@@ -45,11 +45,11 @@ public:
 	void MouseMove(POINT point);
 	void OnLButtonDown(HINSTANCE hIns,POINT point);
 	void OnKeyDown(WPARAM nKey);
+	void OnKeyUp(WPARAM nKey);
 	void OnTwoGameRun(WPARAM nTimerID);
 
 	void ChangeBubbleShowID();
 	void AllBubbleShow(HDC hdc);
-	void CreateBubble(HINSTANCE hIns,int x,int y);
 
 	void ShowTime(HDC hdc);         // 倒计时显示
 	void ShowGameStatus(HDC hdc);   // 游戏状态文字提示
@@ -70,7 +70,8 @@ private:
 	HBITMAP m_bitmap_statusInfo;    // 游戏状态信息提示位图：开始，胜利，平局，失败
 	HBITMAP m_bitmap_win_word;      // 提示第几玩家胜利文字位图
 
-	HWND m_twoGameWnd;
+	HWND m_twoGameWnd;              // 窗口句柄
+	HINSTANCE m_twoGameHIns;
 	int m_gameTime;                 // 倒计时时间 默认五分钟（300s）
 	int m_statusInfo_y;             // 游戏状态文字位置
 

@@ -11,6 +11,8 @@ CPlayer::CPlayer(void)
 	m_player_y = 0;
 	m_player_status = BEGIN;
 	m_direction = DOWN;
+	m_Move_ShowId = 0;
+	m_bMoveFlag = false;
 }
 
 CPlayer::~CPlayer(void)

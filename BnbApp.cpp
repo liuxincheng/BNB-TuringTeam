@@ -146,6 +146,14 @@ void CBnbApp::OnKeyDown(WPARAM nKey)
 	}
 }
 
+void CBnbApp::OnKeyUp(WPARAM nKey)
+{
+	if (twoGameScene != NULL)
+	{
+		twoGameScene->OnKeyUp(nKey);
+	}
+}
+
 void CBnbApp::OnLButtonDown(POINT point)
 {
 	if (twoGameScene != NULL)

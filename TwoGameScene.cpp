@@ -14,6 +14,7 @@ CTwoGameScene::CTwoGameScene()
 	m_statusInfo_y = 0;
 
 	m_twoGameWnd = NULL;
+	m_twoGameHIns = NULL;
 	m_gameStatus = NO_SHOW;
 }
 
@@ -38,6 +39,7 @@ CTwoGameScene::~CTwoGameScene()
 
 void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 {
+	m_twoGameHIns = hIns;
 	m_twoGameWnd = hWnd;
 	m_bitmap_gameBack = LoadBitmap(hIns, MAKEINTRESOURCE(IDB_GAME_BACK));
 	m_bitmap_road = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_ROAD));
@@ -58,6 +60,7 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 	playerOne.PlayerInit(hIns);
 	playerTwo.PlayerInit(hIns);
 
+	// 启动定时器
 	SetTimer(m_twoGameWnd, STOPSOUND_TIMER_ID, 50, NULL);
 	SetTimer(m_twoGameWnd, BUBBLE_CHANGE_TIMER_ID, 200, NULL);
 	SetTimer(m_twoGameWnd, GAME_TIME_TIMER_ID, 1000, NULL);
@@ -140,14 +143,65 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 			KillTimer(m_twoGameWnd,STOPSOUND_TIMER_ID);
 		}		
 		break;
+	// 玩家一放置泡泡
+	case VK_SHIFT :
+		playerOne.CreateBubble(m_twoGameHIns,gameMap,m_lstBubble,playSound,playerOne.m_player_x,playerOne.m_player_y);
+		break;
+	// 玩家二放置泡泡
+	case VK_SPACE:
+		playerTwo.CreateBubble(m_twoGameHIns,gameMap,m_lstBubble,playSound,playerTwo.m_player_x,playerTwo.m_player_y);
+		break;
+	// 人物一移动
+	case VK_LEFT:
+	case VK_RIGHT:
+	case VK_UP:
+	case VK_DOWN:
+		{
+			// 启动动画定时器
+			SetTimer(m_twoGameWnd, PLAYER_MOVE_TIMER_ID,150, NULL);
+			// 将移动标记置为true
+			playerOne.m_bMoveFlag = true;
+			// 移动
+			playerOne.PlayerMove(nKey);
+		}
+		break;
+	// 人物二移动
+	case 'W':
+	case 'A':
+	case 'S':
+	case 'D':
+		{
+			// 启动动画定时器
+			SetTimer(m_twoGameWnd, PLAYER_MOVE_TIMER_ID,150, NULL);
+			// 将移动标记置为true
+			playerTwo.m_bMoveFlag = true;
+			// 移动
+			playerTwo.PlayerMove(nKey);
+		}
+		break;
+	}
+}
+
+void CTwoGameScene::OnKeyUp(WPARAM nKey)
+{
+	if (nKey == VK_LEFT || nKey == VK_RIGHT || nKey == VK_UP || VK_DOWN)
+	{
+		KillTimer(m_twoGameWnd,PLAYER_MOVE_TIMER_ID);
+		playerOne.m_Move_ShowId = 0;
+		playerOne.m_bMoveFlag = false;
 	}
 
-	playerOne.PlayerMove(nKey);
-	playerTwo.PlayerMove(nKey);
+	if (nKey == 'W' || nKey == 'A' || nKey == 'S' || 'D')
+	{
+		KillTimer(m_twoGameWnd,PLAYER_MOVE_TIMER_ID);
+		playerTwo.m_Move_ShowId = 0;
+		playerTwo.m_bMoveFlag = false;
+	}
 }
 
 void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 {
+	// 停止音效
 	if (nTimerID == STOPSOUND_TIMER_ID)
 	{
 		if (playSound.isPlay && (playSound.GetPos() >= playSound.GetFileLen()))
@@ -205,34 +259,34 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 		this->ChangePlayerStartShowID();
 	}
 
-	//风车转定时器
+	// 风车转定时器
 	if (nTimerID == WIND_TIMER_ID)
 	{
 		if(gameMap.m_nShowID == 1) gameMap.m_nShowID = 0;
 		else gameMap.m_nShowID = 1;
 	}
 
-	//if (nTimerID == KEY_STATE_TIMER_ID)
-	//{
-	//	if (GetAsyncKeyState(VK_LEFT))
-	//	{
-	//	}
-	//	if (GetAsyncKeyState(VK_RIGHT))
-	//	{
-	//	}
-	//	if (GetAsyncKeyState(VK_UP))
-	//	{
-	//	}
-	//	if (GetAsyncKeyState(VK_DOWN))
-	//	{
-	//	}
-	//}
+	// 人物移动定时器
+	if (nTimerID == PLAYER_MOVE_TIMER_ID)
+	{
+		if (playerOne.m_bMoveFlag == true)
+		{
+			if (playerOne.m_Move_ShowId >= 5) playerOne.m_Move_ShowId = 0;
+			else playerOne.m_Move_ShowId++;
+		}
+		if (playerTwo.m_bMoveFlag == true)
+		{
+			if (playerTwo.m_Move_ShowId >= 5) playerTwo.m_Move_ShowId = 0;
+			else playerTwo.m_Move_ShowId++;
+		}
+
+	}
 }
 
 void CTwoGameScene::OnLButtonDown(HINSTANCE hIns,POINT point)
 {
 	// 按键按下出泡泡，鼠标传入对应的点x,y
-	this->CreateBubble(hIns, point.x, point.y);
+	//	this->CreateBubble(hIns, point.x, point.y);
 }
 
 void CTwoGameScene::ChangeBubbleShowID()
@@ -282,32 +336,6 @@ void CTwoGameScene::AllBubbleShow(HDC hdc)
 	{
 		(*ite_Bubble)->BubbleShow(hdc);
 		++ite_Bubble;
-	}
-}
-
-void CTwoGameScene::CreateBubble(HINSTANCE hIns,int x,int y)
-{
-	if (x >= 20 && x <= 620 && y >= 41 && y <= 561)
-	{
-		// 将坐标转换成对应地图数组坐标
-		int temp_x = (x - 20) / 40; 
-		int temp_y = (y - 41) / 40;
-		// 判断该位置是否有障碍物 没有障碍物 允许放泡泡
-		if (gameMap.map_type[temp_y][temp_x] == No)
-		{
-			// 将该位置赋值
-			gameMap.map_type[temp_y][temp_x] = Popo;
-			// 确定泡泡位置
-			temp_x = temp_x * 40 + 20;
-			temp_y = temp_y * 40 + 41 - 1;
-			// 创建泡泡
-			CBubble* bubble = new CBubble;
-			bubble->BubbleInit(hIns,temp_x,temp_y,1);
-			m_lstBubble.push_back(bubble);
-
-			// 放置泡泡音效
-			playSound.Play(PUT_BUEBLE_SOUND);
-		}
 	}
 }
 

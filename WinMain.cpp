@@ -109,6 +109,11 @@ LRESULT CALLBACK MyWinProc(HWND hWnd, UINT Msg, WPARAM wparam, LPARAM lparam)
 			pCtrl->OnKeyDown(wparam);
 		}
 		break;
+	case WM_KEYUP:
+		if (pCtrl != NULL)
+		{
+			pCtrl->OnKeyUp(wparam);
+		}
 	case WM_LBUTTONDOWN:
 		if (pCtrl != NULL)
 		{
