@@ -17,7 +17,7 @@ public:
 public:
 	virtual void PlayerInit(HINSTANCE hIns) = 0; // 玩家初始化
 	virtual void PlayerShow(HDC hdc) = 0;        // 玩家出场动画
-	virtual void PlayerMove(int FX) = 0;         // 玩家移动
+	virtual void PlayerMove(int FX,CGameMap &gameMap) = 0;         // 玩家移动
 	virtual void CreateBubble(HINSTANCE hIns,CGameMap &gameMap,list<CBubble*> &lstBubble,CPlaySound &playSound,int x,int y) = 0;
 public:
 	HBITMAP m_hBmpPlayerStart;                   // 开始动画位图

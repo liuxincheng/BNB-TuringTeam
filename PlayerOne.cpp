@@ -67,12 +67,26 @@ void CPlayerOne::PlayerShow(HDC hdc)
 	DeleteObject(hTempDC);
 }
 
-void CPlayerOne::PlayerMove(int FX)
+void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 {
+	// 根据人物位图下中坐标判断是否有障碍物
+	// 将坐标转换成对应地图数组坐标
+	int temp_x = (m_player_x - 20 + 24) / 40;
+	int temp_y = (m_player_y + 64 - 41) / 40;
+	// 定义人物位图位置 与障碍物位置比较 看人物是否可以移动
+	int nPicture_x = 0;
+	int nPicture_y = 0;
+	int nBlock_x = 0;
+	int nBlock_y = 0;
+
+	// 移动
 	if (FX == VK_LEFT)
 	{
 		m_direction = LEFT;
-		if (this->m_player_x > 15)
+		nPicture_x = m_player_x;                   // 人物位图最左侧位置
+		nBlock_x = (temp_x - 1) * 40 + 20 + 40;    // 障碍物右侧位置
+		if (this->m_player_x > 15 && 
+			!(gameMap.map_type[temp_y][temp_x - 1] != No && nPicture_x <= nBlock_x))
 		{
 			this->m_player_x -= 5;
 		}
@@ -81,7 +95,10 @@ void CPlayerOne::PlayerMove(int FX)
 	if (FX == VK_RIGHT)
 	{
 		m_direction = RIGHT;
-		if (this->m_player_x < 20 + 600 - 48)
+		nPicture_x = m_player_x + 48;           // 人物位图最右侧位置
+		nBlock_x = (temp_x + 1) * 40 + 20;      // 障碍物左侧位置
+		if (this->m_player_x < 20 + 600 - 48 && 
+			!(gameMap.map_type[temp_y][temp_x + 1] != No && nPicture_x >= nBlock_x))
 		{
 			this->m_player_x += 5;
 		}
@@ -90,7 +107,10 @@ void CPlayerOne::PlayerMove(int FX)
 	if (FX == VK_UP)
 	{
 		m_direction = UP;
-		if (this->m_player_y > 15)
+		nPicture_y = m_player_y + 32;                // 人物位图最上方位置
+		nBlock_y = (temp_y - 1) * 40 + 40 + 40;      // 障碍物下方位置
+		if (this->m_player_y > 15 && 
+			!(gameMap.map_type[temp_y - 1][temp_x] != No && nPicture_y <= nBlock_y))
 		{
 			this->m_player_y -= 5;
 		}
@@ -99,7 +119,10 @@ void CPlayerOne::PlayerMove(int FX)
 	if (FX == VK_DOWN)
 	{
 		m_direction = DOWN;
-		if (this->m_player_y < 41 + 520 - 64)
+		nPicture_y = m_player_y + 68;           // 人物位图最下方位置
+		nBlock_y = (temp_y + 1) * 40 + 40;      // 障碍物上方位置
+		if (this->m_player_y < 41 + 520 - 64 && 
+			!(gameMap.map_type[temp_y + 1][temp_x] != No && nPicture_y >= nBlock_y))
 		{
 			this->m_player_y += 5;
 		}

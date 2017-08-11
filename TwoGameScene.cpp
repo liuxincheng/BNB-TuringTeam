@@ -162,7 +162,7 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 			// 将移动标记置为true
 			playerOne.m_bMoveFlag = true;
 			// 移动
-			playerOne.PlayerMove(nKey);
+			playerOne.PlayerMove(nKey,gameMap);
 		}
 		break;
 	// 人物二移动
@@ -176,7 +176,7 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 			// 将移动标记置为true
 			playerTwo.m_bMoveFlag = true;
 			// 移动
-			playerTwo.PlayerMove(nKey);
+			playerTwo.PlayerMove(nKey,gameMap);
 		}
 		break;
 	}
