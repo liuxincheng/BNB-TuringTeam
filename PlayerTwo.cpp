@@ -41,19 +41,19 @@ void CPlayerTwo::PlayerShow(HDC hdc)
 		{
 		case UP:
 			SelectObject(hTempDC,m_hBmpPlayerMove);
-			TransparentBlt(hdc,m_player_x,m_player_y,56,67,hTempDC,0*56,UP*67,56,67,RGB(255,0,255));
+			TransparentBlt(hdc,m_player_x,m_player_y,56,67,hTempDC,m_Move_ShowId*56,UP*67,56,67,RGB(255,0,255));
 			break;
 		case DOWN:
 			SelectObject(hTempDC,m_hBmpPlayerMove);
-			TransparentBlt(hdc,m_player_x,m_player_y,56,67,hTempDC,0*56,DOWN*67,56,67,RGB(255,0,255));
+			TransparentBlt(hdc,m_player_x,m_player_y,56,67,hTempDC,m_Move_ShowId*56,DOWN*67,56,67,RGB(255,0,255));
 			break;
 		case LEFT:
 			SelectObject(hTempDC,m_hBmpPlayerMove);
-			TransparentBlt(hdc,m_player_x,m_player_y,56,67,hTempDC,0*56,LEFT*67,56,67,RGB(255,0,255));
+			TransparentBlt(hdc,m_player_x,m_player_y,56,67,hTempDC,m_Move_ShowId*56,LEFT*67,56,67,RGB(255,0,255));
 			break;
 		case RIGHT:
 			SelectObject(hTempDC,m_hBmpPlayerMove);
-			TransparentBlt(hdc,m_player_x,m_player_y,56,67,hTempDC,0*56,RIGHT*67,56,67,RGB(255,0,255));
+			TransparentBlt(hdc,m_player_x,m_player_y,56,67,hTempDC,m_Move_ShowId*56,RIGHT*67,56,67,RGB(255,0,255));
 			break;
 		}
 		break;

@@ -29,3 +29,4 @@ using namespace std;
 #define WIND_TIMER_ID               6 // 风车转动
 #define KEY_STATE_TIMER_ID          7 // 监测按键
 #define PLAYER_MOVE_TIMER_ID        8 // 玩家移动
+#define PLAYER_MOVE_SHOW_TIMER_ID   9 // 玩家移动

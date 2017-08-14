@@ -60,6 +60,7 @@ private:
 	HBITMAP m_bitmap_blueHouse;
 	HBITMAP m_bitmap_windUp;
 	HBITMAP m_bitmap_windDown;
+	HBITMAP m_bitmap_ShadowBlock;
 };
 
 #endif // !CGMAEMAP_H_

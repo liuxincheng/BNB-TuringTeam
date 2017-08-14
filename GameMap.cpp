@@ -9,9 +9,9 @@ CGameMap::CGameMap()
 	m_bitmap_Tree = NULL;
 	m_bitmap_Box = NULL;
 	m_bitmap_blueHouse = NULL;
-	m_bitmap_windUp=NULL;
-	m_bitmap_windDown=NULL;
-
+	m_bitmap_windUp = NULL;
+	m_bitmap_windDown = NULL;
+	m_bitmap_ShadowBlock = NULL;
 	m_nShowID = 1;
 
 	for (int i = 0; i < MAP_HEIGHT; i++)
@@ -34,6 +34,7 @@ CGameMap::~CGameMap()
 	DeleteObject(m_bitmap_blueHouse);
 	DeleteObject(m_bitmap_windUp);
 	DeleteObject(m_bitmap_windDown);
+	DeleteObject(m_bitmap_ShadowBlock);
 	m_bitmap_redBrick = NULL;
 	m_bitmap_redHouse = NULL;
 	m_bitmap_yellowBrick = NULL;
@@ -56,7 +57,7 @@ void CGameMap::MapInit(HINSTANCE hIns)
 	m_bitmap_blueHouse = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_BLUEHOUSE));
 	m_bitmap_windUp = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_WINDMILL_UP));
 	m_bitmap_windDown = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_WINDMILL_DOWN));
-
+	m_bitmap_ShadowBlock = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_SHADOW_BLOCK));
 	m_nShowID = 1;
 
 	// 加载地图数据
@@ -93,33 +94,43 @@ void CGameMap::MapShow(HDC hdc)
 	int y = 0;
 	for (int i = 0; i < MAP_HEIGHT; i++)
 	{
-		for (int j = 0; j < MAP_WIDTH; j++)
+		for (int j = MAP_WIDTH-1; j >= 0; j--)
 		{
 			x = j * 40 + 20;
 			y = i * 40 + 41;
 
 			if (map_type[i][j] == B_H_)
 			{
+				SelectObject(hdcMem,m_bitmap_ShadowBlock);
+				TransparentBlt(hdc,x-3,y-1,45,45,hdcMem,0,0,45,45,RGB(255,0,255));
 				SelectObject(hdcMem,m_bitmap_blueHouse);
 				TransparentBlt(hdc,x,y-17,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
 			}
 			if (map_type[i][j] == R_H_)
 			{
+				SelectObject(hdcMem,m_bitmap_ShadowBlock);
+				TransparentBlt(hdc,x-3,y-1,45,45,hdcMem,0,0,45,45,RGB(255,0,255));
 				SelectObject(hdcMem,m_bitmap_redHouse);
 				TransparentBlt(hdc,x,y-17,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
 			}
 			if (map_type[i][j] == Y_H_)
 			{
+				SelectObject(hdcMem,m_bitmap_ShadowBlock);
+				TransparentBlt(hdc,x-3,y-1,45,45,hdcMem,0,0,45,45,RGB(255,0,255));
 				SelectObject(hdcMem,m_bitmap_yellowHouse);
 				TransparentBlt(hdc,x,y-17,40,57,hdcMem,0,0,40,57,RGB(255,0,255));
 			}
 			if (map_type[i][j] == R_B_)
 			{
+				SelectObject(hdcMem,m_bitmap_ShadowBlock);
+				TransparentBlt(hdc,x-3,y-1,45,45,hdcMem,0,0,45,45,RGB(255,0,255));
 				SelectObject(hdcMem,m_bitmap_redBrick);
 				BitBlt(hdc,x,y,40,40,hdcMem,0,0,SRCCOPY);
 			}
 			if (map_type[i][j] == Y_B_)
 			{
+				SelectObject(hdcMem,m_bitmap_ShadowBlock);
+				TransparentBlt(hdc,x-3,y-1,45,45,hdcMem,0,0,45,45,RGB(255,0,255));
 				SelectObject(hdcMem,m_bitmap_yellowBrick);
 				BitBlt(hdc,x,y,40,40,hdcMem,0,0,SRCCOPY);
 			}
@@ -130,6 +141,8 @@ void CGameMap::MapShow(HDC hdc)
 			}
 			if (map_type[i][j] == Box)
 			{
+				SelectObject(hdcMem,m_bitmap_ShadowBlock);
+				TransparentBlt(hdc,x-3,y-1,45,45,hdcMem,0,0,45,45,RGB(255,0,255));
 				SelectObject(hdcMem,m_bitmap_Box);
 				BitBlt(hdc,x,y,40,40,hdcMem,0,0,SRCCOPY);
 			}

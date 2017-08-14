@@ -18,6 +18,7 @@ void CPlayerOne::PlayerInit(HINSTANCE hIns)
 	m_hBmpPlayerStart = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_ONE_START));
 	m_hBmpPlayerShadow = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_SHADOW_ROLE));
 	m_hBmpPlayerMove = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_ONE_MOVE));
+
 }
 
 void CPlayerOne::PlayerShow(HDC hdc)
