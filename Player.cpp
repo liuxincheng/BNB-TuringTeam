@@ -13,6 +13,7 @@ CPlayer::CPlayer(void)
 	m_direction = DOWN;
 	m_Move_ShowId = 0;
 	m_bMoveFlag = false;
+	m_DieShowID = 0;
 }
 
 CPlayer::~CPlayer(void)

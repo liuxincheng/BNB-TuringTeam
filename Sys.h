@@ -1,7 +1,7 @@
 #include <list>
 #include <Windows.h>
 #include "resource.h"
-
+#include "time.h"
 using namespace std;
 
 // 背景音乐
@@ -21,6 +21,7 @@ using namespace std;
 #define PLAYER_DIE_SOUND   "sounds/die.wav"
 
 // 定时器
+#define TIMER_BEGIN					1
 #define STOPSOUND_TIMER_ID          1 // 音效播完自动停止
 #define BUBBLE_CHANGE_TIMER_ID      2 // 改变泡泡大小变化
 #define GAME_TIME_TIMER_ID          3 // 游戏倒计时
@@ -29,4 +30,9 @@ using namespace std;
 #define WIND_TIMER_ID               6 // 风车转动
 #define KEY_STATE_TIMER_ID          7 // 监测按键
 #define PLAYER_MOVE_TIMER_ID        8 // 玩家移动
-#define PLAYER_MOVE_SHOW_TIMER_ID   9 // 玩家移动
+#define PLAYER_MOVE_SHOW_TIMER_ID   9 // 玩家移动show
+#define PROPERTY_CHANGR_TIMER_ID    10 // 道具变化
+#define PROPERTY_BOOM_TIMER_ID		11 // 泡泡爆炸
+#define PLAYERSTART_DIE_ID			12 //  player die
+
+#define TIMER_END					12	

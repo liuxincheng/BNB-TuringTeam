@@ -29,6 +29,7 @@ public:
 	int m_player_y;                              // 人物位置 y
 	int m_Move_ShowId;                           // 人物移动 改变图片标记
 	bool m_bMoveFlag;                            // 标记哪个人物移动
+	int m_DieShowID;                             // 人物死亡动画标记
 
 	// 记录玩家状态 切换不同位图动画
 	Player_Status m_player_status;

@@ -13,11 +13,13 @@ void CPlayerOne::PlayerInit(HINSTANCE hIns)
 	m_player_x = 15;     // 图片宽480 高64 -->  每个人物宽48
 	m_player_y = 15;
 	m_Start_nShowID = 0;
+	m_DieShowID = 11;
 	m_player_status = BEGIN;
 	m_direction = DOWN;
 	m_hBmpPlayerStart = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_ONE_START));
 	m_hBmpPlayerShadow = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_SHADOW_ROLE));
 	m_hBmpPlayerMove = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_ONE_MOVE));
+	m_hBmpPlayerDie = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_ONE_DIE));
 
 }
 
@@ -62,6 +64,8 @@ void CPlayerOne::PlayerShow(HDC hdc)
 
 	// 死亡动画
 	case DIE:
+			SelectObject(hTempDC,m_hBmpPlayerDie);
+			TransparentBlt(hdc,m_player_x,m_player_y-36,48,100,hTempDC,(11-m_DieShowID)*48,0,48,100,RGB(255,0,255));
 		break;
 	}
 
@@ -86,8 +90,8 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 		m_direction = LEFT;
 		nPicture_x = m_player_x;                   // 人物位图最左侧位置
 		nBlock_x = (temp_x - 1) * 40 + 20 + 40;    // 障碍物右侧位置
-		if (this->m_player_x > 15 && 
-			!(gameMap.map_type[temp_y][temp_x - 1] != No && nPicture_x <= nBlock_x))
+		if (this->m_player_x +3 > 15 && 
+			!(gameMap.map_type[temp_y][temp_x - 1] != No && nPicture_x  <= nBlock_x))
 		{
 			this->m_player_x -= 5;
 		}
@@ -98,8 +102,8 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 		m_direction = RIGHT;
 		nPicture_x = m_player_x + 48;           // 人物位图最右侧位置
 		nBlock_x = (temp_x + 1) * 40 + 20;      // 障碍物左侧位置
-		if (this->m_player_x < 20 + 600 - 48 && 
-			!(gameMap.map_type[temp_y][temp_x + 1] != No && nPicture_x >= nBlock_x))
+		if (this->m_player_x +3 < 20 + 600 - 48 && 
+			!(gameMap.map_type[temp_y][temp_x + 1] != No && nPicture_x  >= nBlock_x))
 		{
 			this->m_player_x += 5;
 		}
@@ -110,8 +114,8 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 		m_direction = UP;
 		nPicture_y = m_player_y + 32;                // 人物位图最上方位置
 		nBlock_y = (temp_y - 1) * 40 + 40 + 40;      // 障碍物下方位置
-		if (this->m_player_y > 15 && 
-			!(gameMap.map_type[temp_y - 1][temp_x] != No && nPicture_y <= nBlock_y))
+		if (this->m_player_y +3> 15 && 
+			!(gameMap.map_type[temp_y - 1][temp_x] != No && nPicture_y  <= nBlock_y))
 		{
 			this->m_player_y -= 5;
 		}
@@ -122,8 +126,8 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 		m_direction = DOWN;
 		nPicture_y = m_player_y + 68;           // 人物位图最下方位置
 		nBlock_y = (temp_y + 1) * 40 + 40;      // 障碍物上方位置
-		if (this->m_player_y < 41 + 520 - 64 && 
-			!(gameMap.map_type[temp_y + 1][temp_x] != No && nPicture_y >= nBlock_y))
+		if (this->m_player_y +3 < 41 + 520 - 64 && 
+			!(gameMap.map_type[temp_y + 1][temp_x] != No && nPicture_y  >= nBlock_y))
 		{
 			this->m_player_y += 5;
 		}
@@ -151,7 +155,7 @@ void CPlayerOne::CreateBubble(HINSTANCE hIns,CGameMap &gameMap,list<CBubble*> &l
 			temp_y = temp_y * 40 + 41 - 1;
 			// 创建泡泡
 			CBubble* bubble = new CBubble;
-			bubble->BubbleInit(hIns,temp_x,temp_y,1);
+			bubble->BubbleInit(hIns,temp_x,temp_y,4);
 			lstBubble.push_back(bubble);
 
 			// 放置泡泡音效

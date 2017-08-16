@@ -13,11 +13,13 @@ void CPlayerTwo::PlayerInit(HINSTANCE hIns)
 	m_player_x = 575;	// 图片宽560 高71 每个人物宽56,
 	m_player_y = 494;
 	m_Start_nShowID = 0;
+	m_DieShowID = 11;
 	m_player_status = BEGIN;
 	m_direction = DOWN;
 	m_hBmpPlayerStart = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_TWO_START));
 	m_hBmpPlayerShadow = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_SHADOW_ROLE));
 	m_hBmpPlayerMove = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_TWO_MOVE));
+	m_hBmpPlayerDie = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_ONE_DIE));
 }
 
 void CPlayerTwo::PlayerShow(HDC hdc)
@@ -60,6 +62,8 @@ void CPlayerTwo::PlayerShow(HDC hdc)
 
 	// 死亡动画
 	case DIE:
+		SelectObject(hTempDC,m_hBmpPlayerDie);
+		TransparentBlt(hdc,m_player_x,m_player_y-36,48,100,hTempDC,(11-m_DieShowID)*48,0,48,100,RGB(255,0,255));
 		break;
 	}
 
