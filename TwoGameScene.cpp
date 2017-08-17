@@ -285,38 +285,38 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 	{
 			if (GetAsyncKeyState(VK_LEFT))
 			{
-				playerOne.PlayerMove(VK_LEFT,gameMap);
+				playerOne.PlayerMove(VK_LEFT,gameMap,prop);
 
 			}
 			if (GetAsyncKeyState(VK_RIGHT))
 			{
-				playerOne.PlayerMove(VK_RIGHT,gameMap);
+				playerOne.PlayerMove(VK_RIGHT,gameMap,prop);
 
 			}
 			if (GetAsyncKeyState(VK_UP))
 			{
-				playerOne.PlayerMove(VK_UP,gameMap);
+				playerOne.PlayerMove(VK_UP,gameMap,prop);
 			}
 			if (GetAsyncKeyState(VK_DOWN))
 			{
-				playerOne.PlayerMove(VK_DOWN,gameMap);
+				playerOne.PlayerMove(VK_DOWN,gameMap,prop);
 			}
 			if (GetAsyncKeyState('A'))
 			{
-				playerTwo.PlayerMove('A',gameMap);
+				playerTwo.PlayerMove('A',gameMap,prop);
 			}
 
 			if (GetAsyncKeyState('D'))
 			{
-				playerTwo.PlayerMove('D',gameMap);
+				playerTwo.PlayerMove('D',gameMap,prop);
 			}
 			if (GetAsyncKeyState('W'))
 			{
-				playerTwo.PlayerMove('W',gameMap);
+				playerTwo.PlayerMove('W',gameMap,prop);
 			}
 			if (GetAsyncKeyState('S'))
 			{
-				playerTwo.PlayerMove('S',gameMap);
+				playerTwo.PlayerMove('S',gameMap,prop);
 			}
 	}
 	//人物移动动画定时器

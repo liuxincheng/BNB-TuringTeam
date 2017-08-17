@@ -7,8 +7,6 @@ CGameProps::CGameProps()
 	m_bitmap_rollerskate = NULL;
 	m_bitmap_redhead = NULL;
 	m_bitmap_powerball = NULL;
-	m_nposh = 0;
-	m_nposw = 0;
 	m_nShowID = 0;
 	for (int i = 0; i < MAP_HEIGHT; i++)
 	{
@@ -17,45 +15,31 @@ CGameProps::CGameProps()
 			m_bj[i][j]=noprop;
 		}
 	}
-	for (int i=0;i<4;i++)
+	for (int i=0;i<EBNUMBER;i++)
 	{
 		energybubblewpos[i]=0;
-	}
-	for (int i=0;i<4;i++)
-	{
 		energybubblehpos[i]=0;
 	}
-	for (int i=0;i<4;i++)
+	for (int i=0;i<EWNUMBER;i++)
 	{
 		energywaterwpos[i]=0;
-	}
-	for (int i=0;i<4;i++)
-	{
 		energywaterhpos[i]=0;
 	}
-	for (int i=0;i<3;i++)
+
+	for (int i=0;i<RSNUMBER;i++)
 	{
 		rollerskatewpos[i]=0;
-	}
-	for (int i=0;i<3;i++)
-	{
 		rollerskatehpos[i]=0;
 	}
-	for (int i=0;i<2;i++)
+	for (int i=0;i<RHNUMBER;i++)
 	{
 		edheadwpos[i]=0;
-	}
-	for (int i=0;i<2;i++)
-	{
 		edheadhpos[i]=0;
-
 	}
-	for (int i=0;i<2;i++)
+
+	for (int i=0;i<PBNUMBER;i++)
 	{
 		powerballwpos[i]=0;
-	}
-	for (int i=0;i<2;i++)
-	{
 		powerballhpos[i]=0;
 	}
 }
@@ -109,82 +93,63 @@ void CGameProps::PropInit(HINSTANCE hIns)
 			PostQuitMessage(0);
 		}
 	}
-	for (int a=0;a<4;a++)
+
+	//随机初始化道具位置
+	int i=0;
+	while (i<EBNUMBER)
 	{
-		energybubblewpos[a]=rand()%MAP_WIDTH;
-	}
-	for (int a=0;a<4;a++)
-	{
-		energybubblehpos[a]=rand()%MAP_HEIGHT;
-	}
-	for (int i=0;i<4;i++)
-	{
+		energybubblewpos[i]=rand()%MAP_WIDTH;
+		energybubblehpos[i]=rand()%MAP_HEIGHT;
 		if((map.map_type[energybubblehpos[i]][energybubblewpos[i]]==R_B_||map.map_type[energybubblehpos[i]][energybubblewpos[i]]==Y_B_) && m_bj[energybubblehpos[i]][energybubblewpos[i]] == noprop)
 		{
 			m_bj[energybubblehpos[i]][energybubblewpos[i]]=energybubble;
+			i++;
 		}
 	}
-	for (int a=0;a<4;a++)
+	int j=0;
+	while (j<EWNUMBER)
 	{
-		energywaterwpos[a]=rand()%MAP_WIDTH;
-	}
-	for (int a=0;a<4;a++)
-	{
-		energywaterhpos[a]=rand()%MAP_HEIGHT;
-	}
-	for (int i=0;i<4;i++)
-	{
-		if((map.map_type[energywaterhpos[i]][energywaterwpos[i]]==R_B_||map.map_type[energywaterhpos[i]][energywaterwpos[i]]==Y_B_) && m_bj[energywaterhpos[i]][energywaterwpos[i]] == noprop)
+		energywaterwpos[j]=rand()%MAP_WIDTH;
+		energywaterhpos[j]=rand()%MAP_HEIGHT;
+		if((map.map_type[energywaterhpos[j]][energywaterwpos[j]]==R_B_||map.map_type[energywaterhpos[j]][energywaterwpos[j]]==Y_B_) && m_bj[energywaterhpos[j]][energywaterwpos[j]] == noprop)
 		{
-			m_bj[energywaterhpos[i]][energywaterwpos[i]]=energywater;
-		}
-	}
-	for (int a=0;a<3;a++)
-	{
-		rollerskatewpos[a]=rand()%MAP_WIDTH;
-	}
-	for (int a=0;a<3;a++)
-	{
-		rollerskatehpos[a]=rand()%MAP_HEIGHT;
-	}
-	for (int i=0;i<3;i++)
-	{
-		if((map.map_type[rollerskatehpos[i]][rollerskatewpos[i]]==R_B_||map.map_type[rollerskatehpos[i]][rollerskatewpos[i]]==Y_B_) && m_bj[rollerskatehpos[i]][rollerskatewpos[i]] == noprop)
-		{
-			m_bj[rollerskatehpos[i]][rollerskatewpos[i]]=rollerskate;
+			m_bj[energywaterhpos[j]][energywaterwpos[j]]=energywater;
+			j++;
 		}
 
 	}
-	for (int a=0;a<3;a++)
+	int k=0;
+	while (k<RSNUMBER)
 	{
-		edheadwpos[a]=rand()%MAP_WIDTH;
-	}
-	for (int a=0;a<2;a++)
-	{
-		edheadhpos[a]=rand()%MAP_HEIGHT;
+		rollerskatewpos[k]=rand()%MAP_WIDTH;
+		rollerskatehpos[k]=rand()%MAP_HEIGHT;
+		if((map.map_type[rollerskatehpos[k]][rollerskatewpos[k]]==R_B_||map.map_type[rollerskatehpos[k]][rollerskatewpos[k]]==Y_B_) && m_bj[rollerskatehpos[k]][rollerskatewpos[k]] == noprop)
+		{
+			m_bj[rollerskatehpos[k]][rollerskatewpos[k]]=rollerskate;
+			k++;
+		}
 
 	}
-	for (int i=0;i<2;i++)
+	int l=0;
+	while (l<RHNUMBER)
 	{
-		if((map.map_type[edheadhpos[i]][edheadwpos[i]]==R_B_ || map.map_type[edheadhpos[i]][edheadwpos[i]]==Y_B_) && m_bj[edheadhpos[i]][edheadwpos[i]] == noprop)
+		edheadwpos[l]=rand()%MAP_WIDTH;
+		edheadhpos[l]=rand()%MAP_HEIGHT;
+		if((map.map_type[edheadhpos[l]][edheadwpos[l]]==R_B_ || map.map_type[edheadhpos[l]][edheadwpos[l]]==Y_B_) && m_bj[edheadhpos[l]][edheadwpos[l]] == noprop)
 		{
-			m_bj[edheadhpos[i]][edheadwpos[i]] = redhead;
+			m_bj[edheadhpos[l]][edheadwpos[l]] = redhead;
+			l++;
 		}
 	}
-
-	for (int a=0;a<2;a++)
+	int m=0;
+	while (m<PBNUMBER)
 	{
-		powerballwpos[a]=rand()%MAP_WIDTH;
-	}
-	for (int a=0;a<2;a++)
-	{
-		powerballhpos[a]=rand()%MAP_HEIGHT;
-	}
-	for (int i=0;i<2;i++)
-	{
-		if((map.map_type[powerballhpos[i]][powerballwpos[i]]==R_B_ || map.map_type[powerballhpos[i]][powerballwpos[i]]==Y_B_) && m_bj[powerballhpos[i]][powerballwpos[i]] == noprop)
+		powerballwpos[m]=rand()%MAP_WIDTH;
+		powerballhpos[m]=rand()%MAP_HEIGHT;
+		if((map.map_type[powerballhpos[m]][powerballwpos[m]]==R_B_ || map.map_type[powerballhpos[m]][powerballwpos[m]]==Y_B_) && m_bj[powerballhpos[m]][powerballwpos[m]] == noprop)
 		{
-			m_bj[powerballhpos[i]][powerballwpos[i]] = powerball;
+			m_bj[powerballhpos[m]][powerballwpos[m]] = powerball;
+			m++;
 		}
 	}
 }
@@ -195,7 +160,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 	HDC hdcMem = CreateCompatibleDC(hdc);
 	int x = 0;
 	int y = 0;
-	for (int i=0;i<4;i++)
+	for (int i=0;i<EBNUMBER;i++)
 	{
 		x = energybubblewpos[i] * 40 + 20;
 		y = energybubblehpos[i] * 40 + 41;
@@ -205,7 +170,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 			TransparentBlt(hdc,x,y,42,45,hdcMem,(2-m_nShowID)*42,0,42,45,RGB(255,0,255));
 		}
 	}
-	for (int j=0;j<4;j++)
+	for (int j=0;j<EWNUMBER;j++)
 	{
 		x = energywaterwpos[j] * 40 + 20;
 		y = energywaterhpos[j] * 40 + 41;
@@ -215,7 +180,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 			TransparentBlt(hdc,x,y,42,45,hdcMem,(2-m_nShowID)*42,0,42,45,RGB(255,0,255));
 		}
 	}
-	for (int k=0;k<3;k++)
+	for (int k=0;k<RSNUMBER;k++)
 	{
 
 		x = rollerskatewpos[k] * 40 + 20;
@@ -226,7 +191,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 			TransparentBlt(hdc,x,y,42,45,hdcMem,(2-m_nShowID)*42,0,42,45,RGB(255,0,255));
 		}
 	}
-	for (int m=0;m<2;m++)
+	for (int m=0;m<RHNUMBER;m++)
 	{
 
 		x = edheadwpos[m] * 40 + 20;
@@ -237,7 +202,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 			TransparentBlt(hdc,x,y,42,45,hdcMem,(2-m_nShowID)*42,0,42,45,RGB(255,0,255));
 		}
 	}
-	for (int n=0;n<2;n++)
+	for (int n=0;n<PBNUMBER;n++)
 	{
 
 		x = powerballwpos[n] * 40 + 20;

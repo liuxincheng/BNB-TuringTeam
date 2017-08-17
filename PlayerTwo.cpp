@@ -7,13 +7,13 @@ CPlayerTwo::CPlayerTwo()
 CPlayerTwo::~CPlayerTwo()
 {
 } 
-
 void CPlayerTwo::PlayerInit(HINSTANCE hIns)
 {
 	m_player_x = 575;	// 图片宽560 高71 每个人物宽56,
 	m_player_y = 494;
 	m_Start_nShowID = 0;
 	m_DieShowID = 11;
+	m_speed=1;
 	m_player_status = BEGIN;
 	m_direction = DOWN;
 	m_hBmpPlayerStart = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_TWO_START));
@@ -70,7 +70,7 @@ void CPlayerTwo::PlayerShow(HDC hdc)
 	DeleteObject(hTempDC);
 }
 
-void CPlayerTwo::PlayerMove(int FX,CGameMap &gameMap)
+void CPlayerTwo::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop)
 {
 	// 根据人物位图下中坐标判断是否有障碍物
 	// 将坐标转换成对应地图数组坐标
@@ -91,7 +91,8 @@ void CPlayerTwo::PlayerMove(int FX,CGameMap &gameMap)
 		if (this->m_player_x > 15 && 
 			!(gameMap.map_type[temp_y][temp_x - 1] != No && nPicture_x <= nBlock_x))
 		{
-			this->m_player_x -= 5;
+			this->WhetherProp(gameprop,&m_speed);
+			this->m_player_x -= 5*m_speed;
 		}
 	}
 
@@ -103,7 +104,8 @@ void CPlayerTwo::PlayerMove(int FX,CGameMap &gameMap)
 		if (this->m_player_x < 575 && 
 			!(gameMap.map_type[temp_y][temp_x + 1] != No && nPicture_x >= nBlock_x))
 		{
-			this->m_player_x += 5;
+			this->WhetherProp(gameprop,&m_speed);
+			this->m_player_x += 5*m_speed;
 		}
 	}
 
@@ -115,7 +117,8 @@ void CPlayerTwo::PlayerMove(int FX,CGameMap &gameMap)
 		if (this->m_player_y > 15 && 
 			!(gameMap.map_type[temp_y - 1][temp_x] != No && nPicture_y <= nBlock_y))
 		{
-			this->m_player_y -= 5;
+			this->WhetherProp(gameprop,&m_speed);
+			this->m_player_y -= 5*m_speed;
 		}
 	}
 
@@ -127,7 +130,8 @@ void CPlayerTwo::PlayerMove(int FX,CGameMap &gameMap)
 		if (this->m_player_y < 41 + 520 - 67 && 
 			!(gameMap.map_type[temp_y + 1][temp_x] != No && nPicture_y >= nBlock_y))
 		{
-			this->m_player_y += 5;
+			this->WhetherProp(gameprop,&m_speed);
+			this->m_player_y += 5*m_speed;
 		}
 	}
 }
@@ -159,5 +163,36 @@ void CPlayerTwo::CreateBubble(HINSTANCE hIns,CGameMap &gameMap,list<CBubble*> &l
 			// 放置泡泡音效
 			playSound.Play(PUT_BUEBLE_SOUND);
 		}
+	}
+}
+
+void CPlayerTwo::WhetherProp(CGameProps &gameprop,int* speed)
+{
+	// 将坐标转换成对应地图数组坐标
+	int x_temp = (m_player_x - 20 + 24) / 40;
+	int y_temp = (m_player_y + 64 - 41) / 40;
+	switch (gameprop.m_bj[y_temp][x_temp])
+	{
+	case noprop:
+		*speed=1;
+		break;
+	case energybubble:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+		break;
+	case energywater:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+		break;
+	case rollerskate:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+		(*speed)++;
+		break;
+	case redhead:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+		*speed=5;
+		break;
+	case powerball:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+
+		break;
 	}
 }

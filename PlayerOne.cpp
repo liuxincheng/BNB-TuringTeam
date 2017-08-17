@@ -14,6 +14,7 @@ void CPlayerOne::PlayerInit(HINSTANCE hIns)
 	m_player_y = 15;
 	m_Start_nShowID = 0;
 	m_DieShowID = 11;
+	m_speed=1;
 	m_player_status = BEGIN;
 	m_direction = DOWN;
 	m_hBmpPlayerStart = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_ONE_START));
@@ -72,7 +73,7 @@ void CPlayerOne::PlayerShow(HDC hdc)
 	DeleteObject(hTempDC);
 }
 
-void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
+void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop)
 {
 	// 根据人物位图下中坐标判断是否有障碍物
 	// 将坐标转换成对应地图数组坐标
@@ -83,7 +84,6 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 	int nPicture_y = 0;
 	int nBlock_x = 0;
 	int nBlock_y = 0;
-
 	// 移动
 	if (FX == VK_LEFT)
 	{
@@ -93,7 +93,8 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 		if (this->m_player_x +3 > 15 && 
 			!(gameMap.map_type[temp_y][temp_x - 1] != No && nPicture_x  <= nBlock_x))
 		{
-			this->m_player_x -= 5;
+			this->WhetherProp(gameprop,&m_speed);
+			this->m_player_x -= 5*m_speed;
 		}
 	}
 
@@ -105,7 +106,8 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 		if (this->m_player_x +3 < 20 + 600 - 48 && 
 			!(gameMap.map_type[temp_y][temp_x + 1] != No && nPicture_x  >= nBlock_x))
 		{
-			this->m_player_x += 5;
+			this->WhetherProp(gameprop,&m_speed);
+			this->m_player_x += 5*m_speed;
 		}
 	}
 
@@ -117,7 +119,8 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 		if (this->m_player_y +3> 15 && 
 			!(gameMap.map_type[temp_y - 1][temp_x] != No && nPicture_y  <= nBlock_y))
 		{
-			this->m_player_y -= 5;
+			this->WhetherProp(gameprop,&m_speed);
+			this->m_player_y -= 5*m_speed;
 		}
 	}
 
@@ -129,7 +132,8 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap)
 		if (this->m_player_y +3 < 41 + 520 - 64 && 
 			!(gameMap.map_type[temp_y + 1][temp_x] != No && nPicture_y  >= nBlock_y))
 		{
-			this->m_player_y += 5;
+			this->WhetherProp(gameprop,&m_speed);
+			this->m_player_y += 5*m_speed;
 		}
 	}
 }
@@ -161,5 +165,36 @@ void CPlayerOne::CreateBubble(HINSTANCE hIns,CGameMap &gameMap,list<CBubble*> &l
 			// 放置泡泡音效
 			playSound.Play(PUT_BUEBLE_SOUND);
 		}
+	}
+}
+
+void CPlayerOne::WhetherProp(CGameProps &gameprop,int* speed)
+{
+	// 将坐标转换成对应地图数组坐标
+	int x_temp = (m_player_x - 20 + 24) / 40;
+	int y_temp = (m_player_y + 64 - 41) / 40;
+	switch (gameprop.m_bj[y_temp][x_temp])
+	{
+	case noprop:
+		*speed=1;
+		break;
+	case energybubble:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+		break;
+	case energywater:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+		break;
+	case rollerskate:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+		(*speed)++;
+		break;
+	case redhead:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+		*speed=5;
+		break;
+	case powerball:
+		gameprop.m_bj[y_temp][x_temp]=noprop;
+
+		break;
 	}
 }
