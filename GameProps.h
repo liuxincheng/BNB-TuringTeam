@@ -4,16 +4,7 @@
 #include "Sys.h"
 #include "GameMap.h"
 
-#define EBNUMBER   3    //水泡放3个
-#define EWNUMBER   3    //能量水放3个
-#define RSNUMBER   2    //旱冰鞋增加速度放2个
-#define RHNUMBER   2    //红魔头速度增到最大放2个
-#define PBNUMBER   1    //大力丸爆炸范围最大放1个
-
-enum PropType
-{
-	noprop=10, energybubble, energywater, rollerskate, redhead, powerball
-};
+enum PropType { noprop = 10, energybubble, energywater, rollerskate, redhead, powerball };
 
 
 class CGameProps

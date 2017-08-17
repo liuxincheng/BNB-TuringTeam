@@ -64,14 +64,13 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 	playerTwo.PlayerInit(hIns);
 
 	// 启动定时器
-	SetTimer(m_twoGameWnd, STOPSOUND_TIMER_ID, 50, NULL);
+	SetTimer(m_twoGameWnd, STOPSOUND_TIMER_ID, 10, NULL);
 	SetTimer(m_twoGameWnd, BUBBLE_CHANGE_TIMER_ID, 200, NULL);
 	SetTimer(m_twoGameWnd, GAME_TIME_TIMER_ID, 1000, NULL);
 	SetTimer(m_twoGameWnd, STATUS_INFO_TIMER_ID, 80, NULL);
 	SetTimer(m_twoGameWnd, PLAYERSTART_TIMER_ID,50, NULL);
 	SetTimer(m_twoGameWnd, WIND_TIMER_ID,500, NULL);
-	SetTimer(m_twoGameWnd, KEY_STATE_TIMER_ID,1, NULL);
-	SetTimer(m_twoGameWnd, PLAYER_MOVE_TIMER_ID,30,NULL);
+	SetTimer(m_twoGameWnd, PLAYER_MOVE_TIMER_ID,10,NULL);
 	SetTimer(m_twoGameWnd,PLAYER_MOVE_SHOW_TIMER_ID,150,NULL);
 	SetTimer(m_twoGameWnd, PROPERTY_CHANGR_TIMER_ID, 200, NULL);
 	SetTimer(m_twoGameWnd, PROPERTY_BOOM_TIMER_ID, 1000/30, NULL);
@@ -148,7 +147,7 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 		if (playSound.isKeyToStop)
 		{
 			playSound.isKeyToStop = false;
-			SetTimer(m_twoGameWnd,STOPSOUND_TIMER_ID,50,NULL);
+			SetTimer(m_twoGameWnd,STOPSOUND_TIMER_ID,10,NULL);
 		}
 		else 
 		{
@@ -158,34 +157,66 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 		break;
 		// 玩家一放置泡泡
 	case VK_SHIFT :
-		playerOne.CreateBubble(m_twoGameHIns,gameMap,m_lstBubble,playSound,playerOne.m_player_x,playerOne.m_player_y);
+		// 遍历链表 看玩家一已放置的泡泡
+		{
+			auto ite = m_lstBubble.begin();
+			int tempNum = 0;
+			while (ite != m_lstBubble.end())
+			{
+				if ((*ite)->m_bubble_owner == OWNER_PLAYERONE)
+				{
+					tempNum++;
+				}
+				ite++;
+			}
+			if (tempNum < playerOne.m_bubbleNum)
+			{
+				playerOne.CreateBubble(m_twoGameHIns,gameMap,m_lstBubble,playSound,playerOne.m_player_x,playerOne.m_player_y);
+			}
+		}
 		break;
 		// 玩家二放置泡泡
 	case VK_SPACE:
-		playerTwo.CreateBubble(m_twoGameHIns,gameMap,m_lstBubble,playSound,playerTwo.m_player_x,playerTwo.m_player_y);
+		{
+			// 遍历链表 看玩家二已放置的泡泡
+			auto ite = m_lstBubble.begin();
+			int tempNum = 0;
+			while (ite != m_lstBubble.end())
+			{
+				if ((*ite)->m_bubble_owner == OWNER_PLAYERTWO)
+				{
+					tempNum++;
+				}
+				ite++;
+			}
+			if (tempNum < playerTwo.m_bubbleNum)
+			{
+				playerTwo.CreateBubble(m_twoGameHIns,gameMap,m_lstBubble,playSound,playerTwo.m_player_x,playerTwo.m_player_y);
+			}
+		}
 		break;
 		// 人物一移动
-		case VK_LEFT:
-		case VK_RIGHT:
-		case VK_UP:
-		case VK_DOWN:
-			{
-				// 将移动标记置为true
-				playerOne.m_bMoveFlag = true;
+	case VK_LEFT:
+	case VK_RIGHT:
+	case VK_UP:
+	case VK_DOWN:
+		{
+			// 将移动标记置为true
+			playerOne.m_bMoveFlag = true;
 
-			}
-			break;
+		}
+		break;
 		// 人物二移动
-		case 'W':
-		case 'A':
-		case 'S':
-		case 'D':
-			{
-				// 将移动标记置为true
-				playerTwo.m_bMoveFlag = true;
+	case 'W':
+	case 'A':
+	case 'S':
+	case 'D':
+		{
+			// 将移动标记置为true
+			playerTwo.m_bMoveFlag = true;
 
-			}
-			break;
+		}
+		break;
 	}
 }
 
@@ -283,43 +314,63 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 	// 人物移动定时器
 	if (nTimerID == PLAYER_MOVE_TIMER_ID)
 	{
+		// 通过改变监测按键时间 改变移动速度
+		static int one_flag = 10;
+		static int two_flag = 10;
+		if (one_flag < playerOne.m_speed_timer)
+		{
+			one_flag += 10;
+		}
+		else
+		{
 			if (GetAsyncKeyState(VK_LEFT))
 			{
-				playerOne.PlayerMove(VK_LEFT,gameMap,prop);
+				playerOne.PlayerMove(VK_LEFT,gameMap,prop,playSound);
 
 			}
 			if (GetAsyncKeyState(VK_RIGHT))
 			{
-				playerOne.PlayerMove(VK_RIGHT,gameMap,prop);
+				playerOne.PlayerMove(VK_RIGHT,gameMap,prop,playSound);
 
 			}
 			if (GetAsyncKeyState(VK_UP))
 			{
-				playerOne.PlayerMove(VK_UP,gameMap,prop);
+				playerOne.PlayerMove(VK_UP,gameMap,prop,playSound);
 			}
 			if (GetAsyncKeyState(VK_DOWN))
 			{
-				playerOne.PlayerMove(VK_DOWN,gameMap,prop);
+				playerOne.PlayerMove(VK_DOWN,gameMap,prop,playSound);
 			}
+			one_flag = 10;
+		}
+
+		if (two_flag < playerTwo.m_speed_timer)
+		{
+			two_flag += 10;
+		}
+		else
+		{
 			if (GetAsyncKeyState('A'))
 			{
-				playerTwo.PlayerMove('A',gameMap,prop);
+				playerTwo.PlayerMove('A',gameMap,prop,playSound);
 			}
 
 			if (GetAsyncKeyState('D'))
 			{
-				playerTwo.PlayerMove('D',gameMap,prop);
+				playerTwo.PlayerMove('D',gameMap,prop,playSound);
 			}
 			if (GetAsyncKeyState('W'))
 			{
-				playerTwo.PlayerMove('W',gameMap,prop);
+				playerTwo.PlayerMove('W',gameMap,prop,playSound);
 			}
 			if (GetAsyncKeyState('S'))
 			{
-				playerTwo.PlayerMove('S',gameMap,prop);
+				playerTwo.PlayerMove('S',gameMap,prop,playSound);
 			}
+			two_flag = 10;
+		}
 	}
-	//人物移动动画定时器
+	// 人物移动动画定时器
 	if (nTimerID == PLAYER_MOVE_SHOW_TIMER_ID)
 	{		
 		if (playerOne.m_bMoveFlag == true)
@@ -383,7 +434,7 @@ void CTwoGameScene::ChangeBubbleShowID()
 			int j = ((*ite_Bubble)->m_nBubble_x - 20) / 40;
 			// 消除地图障碍物
 			gameMap.MapBlast(i,j,(*ite_Bubble)->m_nBubble_power,(*ite_Bubble)->m_arrfx);
-	//----------------------------------------------------------------
+			//----------------------------------------------------------------
 			this->SetFx(ite_Bubble,i,j);
 
 			if(IsKillPlayerOne(ite_Bubble,i,j))  
@@ -427,7 +478,7 @@ void CTwoGameScene::ChangeBubbleShowID()
 					++ite_JBubble;
 				}
 			}
-//-------------------------------------------------------------------
+			//-------------------------------------------------------------------
 			// 将地图该位置置为空 即 No
 			gameMap.map_type[i][j] = No;
 			// 删除该泡泡
@@ -457,13 +508,13 @@ void CTwoGameScene::ChangeBubbleShowID()
 bool CTwoGameScene::IsButtleBoom(list<CBubble*>::iterator &ite_JBubble, list<CBubble*>::iterator &ite_Bubble)
 {
 	if ((*ite_JBubble)->m_nBubble_x + 20 > (*ite_Bubble)->m_nBubble_x 
-	&& (*ite_JBubble)->m_nBubble_x + 20 < (*ite_Bubble)->m_nBubble_x  + 40
-	&& (*ite_JBubble)->m_nBubble_y + 20  > (*ite_Bubble)->m_nBubble_y  - ((*ite_Bubble)->m_arrfx[0])*40
-	&& (*ite_JBubble)->m_nBubble_y + 20  < (*ite_Bubble)->m_nBubble_y  + ((*ite_Bubble)->m_arrfx[1])*40
-	|| ((*ite_JBubble)->m_nBubble_x + 20  > (*ite_Bubble)->m_nBubble_x - (*ite_Bubble)->m_arrfx[2]*40 
-	&& (*ite_JBubble)->m_nBubble_x + 20  < (*ite_Bubble)->m_nBubble_x + (*ite_Bubble)->m_arrfx[3]*40 + 40
-	&& (*ite_JBubble)->m_nBubble_y + 20  > (*ite_Bubble)->m_nBubble_y
-	&& (*ite_JBubble)->m_nBubble_y + 20  < (*ite_Bubble)->m_nBubble_y + 40))
+		&& (*ite_JBubble)->m_nBubble_x + 20 < (*ite_Bubble)->m_nBubble_x  + 40
+		&& (*ite_JBubble)->m_nBubble_y + 20  > (*ite_Bubble)->m_nBubble_y  - ((*ite_Bubble)->m_arrfx[0])*40
+		&& (*ite_JBubble)->m_nBubble_y + 20  < (*ite_Bubble)->m_nBubble_y  + ((*ite_Bubble)->m_arrfx[1])*40
+		|| ((*ite_JBubble)->m_nBubble_x + 20  > (*ite_Bubble)->m_nBubble_x - (*ite_Bubble)->m_arrfx[2]*40 
+		&& (*ite_JBubble)->m_nBubble_x + 20  < (*ite_Bubble)->m_nBubble_x + (*ite_Bubble)->m_arrfx[3]*40 + 40
+		&& (*ite_JBubble)->m_nBubble_y + 20  > (*ite_Bubble)->m_nBubble_y
+		&& (*ite_JBubble)->m_nBubble_y + 20  < (*ite_Bubble)->m_nBubble_y + 40))
 		return true;
 	return false;
 }
@@ -509,7 +560,7 @@ void CTwoGameScene::SetFx(list<CBubble*>::iterator &ite_Bubble, int i, int j) //
 	}
 	for(int n = 1;n <(*ite_Bubble)->m_nBubble_power + 1;n++)
 	{
-		if((gameMap.map_type[i + n][j] >= R_H_ && gameMap.map_type[i + n][j] <= WIND) || i + n > MAP_HEIGHT)
+		if((gameMap.map_type[i + n][j] >= R_H_ && gameMap.map_type[i + n][j] <= WIND) || i + n > MAP_HEIGHT - 1)
 		{
 			(*ite_Bubble)->m_arrfx[1] = n-1;
 			break;
@@ -525,13 +576,14 @@ void CTwoGameScene::SetFx(list<CBubble*>::iterator &ite_Bubble, int i, int j) //
 	}
 	for(int n = 1;n <(*ite_Bubble)->m_nBubble_power + 1;n++)
 	{
-		if((gameMap.map_type[i][j + n] >= R_H_ && gameMap.map_type[i][j + n] <= WIND) || j + n > MAP_WIDTH)
+		if((gameMap.map_type[i][j + n] >= R_H_ && gameMap.map_type[i][j + n] <= WIND) || j + n > MAP_WIDTH - 1)
 		{
 			(*ite_Bubble)->m_arrfx[3] = n-1;
 			break;
 		}
 	}
 }
+
 void CTwoGameScene::ChangeBoomShowID()
 {
 	list<CBubble*>::iterator ite_boom = m_lstBoom.begin();
@@ -657,18 +709,21 @@ void CTwoGameScene::GameOver()
 	if (playerOne.m_player_status == DIE)
 	{
 		m_gameStatus = PLAYER_TWO_WIN;
+		playSound.Play(WIN_GAME_SOUND);
 	}
 	// 玩家二胜利
 	else if (playerTwo.m_player_status == DIE)
 	{
 		m_gameStatus = PLAYER_ONE_WIN;
+		playSound.Play(WIN_GAME_SOUND);
 	}
 	// 平局
 	else if(playerOne.m_player_status == DIE && playerTwo.m_player_status == DIE)
 	{
 		m_gameStatus = DRAW;
+		playSound.Play(DRAW_GAME_SOUND);
 	}
-	
+
 	m_statusInfo_y = 60;
 	for(int i = TIMER_BEGIN;i <= TIMER_END;i++)
 	{

@@ -270,22 +270,18 @@ void CGameMap::BlastBlock_Two(int i, int j, int *arr)
 	if ( i < MAP_HEIGHT - 2 && map_type[i+1][j] <= Box && map_type[i+2][j] <= Box && map_type[i+2][j] != No)
 	{
 		map_type[i+2][j] = No;
-	//	arr[3] = 2;
 	}
 	if ( i > 1 && map_type[i-1][j] <= Box && map_type[i-2][j] <= Box && map_type[i-2][j] != No)
 	{
 		map_type[i-2][j] = No;
-	//	arr[2] = 2;
 	}
 	if ( j < MAP_WIDTH - 2 && map_type[i][j+1] <= Box && map_type[i][j+2] <= Box && map_type[i][j+2] != No)
 	{
 		map_type[i][j+2] = No;
-	//	arr[1] = 2;
 	}
 	if ( j > 1 && map_type[i][j-1] <= Box && map_type[i][j-2] <= Box && map_type[i][j-2] != No)
 	{
 		map_type[i][j-2] = No;
-	//	arr[0] = 2;
 	}
 }
 
@@ -294,22 +290,18 @@ void CGameMap::BlastBlock_Three(int i, int j, int *arr)
 	if ( i < MAP_HEIGHT - 3 && map_type[i+1][j] <= Box && map_type[i+2][j] <= Box &&  map_type[i+3][j] <= Box && map_type[i+3][j] != No)
 	{
 		map_type[i+3][j] = No;
-	//	arr[3] = 3;
 	}
 	if ( i > 2 && map_type[i-1][j] <= Box && map_type[i-2][j] <= Box && map_type[i-3][j] <= Box && map_type[i-3][j] != No)
 	{
 		map_type[i-3][j] = No;
-	//	arr[2] = 3;
 	}
 	if ( j < MAP_WIDTH - 3 && map_type[i][j+1] <= Box && map_type[i][j+2] <= Box && map_type[i][j+3] <= Box && map_type[i][j+3] != No)
 	{
 		map_type[i][j+3] = No;
-	//	arr[1] = 3;
 	}
 	if ( j > 2 && map_type[i][j-1] <= Box && map_type[i][j-2] <= Box && map_type[i][j-3] <= Box && map_type[i][j-3] != No)
 	{
 		map_type[i][j-3] = No;
-	//	arr[0] = 3;
 	}
 }
 
@@ -318,21 +310,17 @@ void CGameMap::BlastBlock_Four(int i, int j, int *arr)
 	if ( i < MAP_HEIGHT - 4 && map_type[i+1][j] <= Box && map_type[i+2][j] <= Box &&  map_type[i+3][j] <= Box &&  map_type[i+4][j] <= Box && map_type[i+4][j] != No)
 	{
 		map_type[i+4][j] = No;
-	//	arr[3] = 4;
 	}
 	if ( i > 3 && map_type[i-1][j] <= Box && map_type[i-2][j] <= Box && map_type[i-3][j] <= Box && map_type[i-4][j] <= Box && map_type[i-4][j] != No)
 	{
 		map_type[i-4][j] = No;
-	//	arr[2] = 4;
 	}
 	if ( j < MAP_WIDTH - 4 && map_type[i][j+1] <= Box && map_type[i][j+2] <= Box && map_type[i][j+3] <= Box && map_type[i][j+4] <= Box && map_type[i][j+4] != No)
 	{
 		map_type[i][j+4] = No;
-	//	arr[1] = 4;
 	}
 	if ( j > 3 && map_type[i][j-1] <= Box && map_type[i][j-2] <= Box && map_type[i][j-3] <= Box && map_type[i][j-4] <= Box && map_type[i][j-4] != No)
 	{
 		map_type[i][j-4] = No;
-	//	arr[0] = 4;
 	}
 }

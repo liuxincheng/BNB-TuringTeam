@@ -17,9 +17,9 @@ public:
 public:
 	virtual void PlayerInit(HINSTANCE hIns) = 0; // 玩家初始化
 	virtual void PlayerShow(HDC hdc) = 0;        // 玩家出场动画
-	virtual void PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameProp) = 0;         // 玩家移动
+	virtual void PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameProp,CPlaySound &playSound) = 0;         // 玩家移动
 	virtual void CreateBubble(HINSTANCE hIns,CGameMap &gameMap,list<CBubble*> &lstBubble,CPlaySound &playSound,int x,int y) = 0;
-	virtual void WhetherProp(CGameProps &gameprop,int* speed)=0;     //判断位置是否有道具
+	virtual bool WhetherProp(CGameProps &gameprop)=0;     //判断位置是否有道具
 public:
 	HBITMAP m_hBmpPlayerStart;                   // 开始动画位图
 	HBITMAP m_hBmpPlayerMove;                    // 移动动画位图
@@ -31,7 +31,9 @@ public:
 	int m_Move_ShowId;                           // 人物移动 改变图片标记
 	bool m_bMoveFlag;                            // 标记哪个人物移动
 	int m_DieShowID;                             // 人物死亡动画标记
-	int m_speed;                              // 人物通过道具改变速度
+	int m_speed_timer;                           // 人物通过道具改变移动速度
+	int m_bubbleNum;                             // 泡泡个数
+	int m_bubblePower;                           // 泡泡威力
 	// 记录玩家状态 切换不同位图动画
 	Player_Status m_player_status;
 	// 记录玩家移动方向

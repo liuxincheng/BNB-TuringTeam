@@ -11,6 +11,7 @@ CBubble::CBubble()
 	m_nBubbleBj = 0;
 	m_nBoomShowID = 0;
 	m_nBubble_power = 4;
+	m_bubble_owner = OWNER_PLAYERNO;
 	for(int i = 0;i < 4;i++)
 	{
 		m_arrfx[i] = 0;

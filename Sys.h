@@ -28,11 +28,21 @@ using namespace std;
 #define STATUS_INFO_TIMER_ID        4 // 游戏状态文字移动
 #define PLAYERSTART_TIMER_ID	    5 // 玩家开场动画
 #define WIND_TIMER_ID               6 // 风车转动
-#define KEY_STATE_TIMER_ID          7 // 监测按键
-#define PLAYER_MOVE_TIMER_ID        8 // 玩家移动
-#define PLAYER_MOVE_SHOW_TIMER_ID   9 // 玩家移动show
-#define PROPERTY_CHANGR_TIMER_ID    10 // 道具变化
-#define PROPERTY_BOOM_TIMER_ID		11 // 泡泡爆炸
-#define PLAYERSTART_DIE_ID			12 //  player die
+#define PLAYER_MOVE_TIMER_ID        7 // 玩家移动
+#define PLAYER_MOVE_SHOW_TIMER_ID   8 // 玩家移动show
+#define PROPERTY_CHANGR_TIMER_ID    9 // 道具变化
+#define PROPERTY_BOOM_TIMER_ID		10 // 泡泡爆炸
+#define PLAYERSTART_DIE_ID			11 // 玩家死亡
+#define TIMER_END					11
 
-#define TIMER_END					12	
+// 人物属性
+#define _DEF_BUBBLE_POWER_MAX       4  // 泡泡威力最大值
+#define _DEF_BUBBLE_NUM_MAX         5  // 泡泡最大放置个数
+#define _DEF_PLAYER_SPEED_TIMER     40 // 玩家移动最大定时器时间
+
+// 道具数量
+#define EBNUMBER   5    // 水泡赠加水泡数量
+#define EWNUMBER   5    // 能量水赠加爆炸范围
+#define RSNUMBER   5    // 旱冰鞋增加速度
+#define RHNUMBER   1    // 红魔头速度增到最大
+#define PBNUMBER   1    // 大力丸爆炸范围最大

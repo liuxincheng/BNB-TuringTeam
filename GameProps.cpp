@@ -15,32 +15,32 @@ CGameProps::CGameProps()
 			m_bj[i][j]=noprop;
 		}
 	}
-	for (int i=0;i<EBNUMBER;i++)
+	for (int i = 0; i < EBNUMBER; i++)
 	{
-		energybubblewpos[i]=0;
-		energybubblehpos[i]=0;
+		energybubblewpos[i] = 0;
+		energybubblehpos[i] = 0;
 	}
-	for (int i=0;i<EWNUMBER;i++)
+	for (int i = 0; i < EWNUMBER; i++)
 	{
-		energywaterwpos[i]=0;
-		energywaterhpos[i]=0;
-	}
-
-	for (int i=0;i<RSNUMBER;i++)
-	{
-		rollerskatewpos[i]=0;
-		rollerskatehpos[i]=0;
-	}
-	for (int i=0;i<RHNUMBER;i++)
-	{
-		edheadwpos[i]=0;
-		edheadhpos[i]=0;
+		energywaterwpos[i] = 0;
+		energywaterhpos[i] = 0;
 	}
 
-	for (int i=0;i<PBNUMBER;i++)
+	for (int i = 0; i < RSNUMBER; i++)
 	{
-		powerballwpos[i]=0;
-		powerballhpos[i]=0;
+		rollerskatewpos[i] = 0;
+		rollerskatehpos[i] = 0;
+	}
+	for (int i = 0; i < RHNUMBER; i++)
+	{
+		edheadwpos[i] = 0;
+		edheadhpos[i] = 0;
+	}
+
+	for (int i = 0; i < PBNUMBER; i++)
+	{
+		powerballwpos[i] = 0;
+		powerballhpos[i] = 0;
 	}
 }
 
@@ -56,11 +56,11 @@ CGameProps::~CGameProps()
 	m_bitmap_rollerskate=NULL;
 	m_bitmap_redhead=NULL;
 	m_bitmap_powerball=NULL;
-
 }
 
 void CGameProps::PropInit(HINSTANCE hIns)
 {
+	// 设置随机数种子
 	srand((unsigned int)time(0));
 	//加载图片
 	m_bitmap_energybubble=::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_WATER_BUBBLE));
@@ -68,7 +68,7 @@ void CGameProps::PropInit(HINSTANCE hIns)
 	m_bitmap_rollerskate=::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_SPEED_SHOE));
 	m_bitmap_redhead=::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_MAX_SPEED));
 	m_bitmap_powerball=::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_MAX_POWER));
-	m_nShowID=2;
+	m_nShowID = 2;
 	// 加载地图数据
 	FILE *fp = NULL;
 	fopen_s(&fp,"mapData/map_village1.txt","r");
@@ -94,19 +94,19 @@ void CGameProps::PropInit(HINSTANCE hIns)
 		}
 	}
 
-	//随机初始化道具位置
-	int i=0;
-	while (i<EBNUMBER)
+	// 随机初始化道具位置
+	int i = 0;
+	while (i < EBNUMBER)
 	{
-		energybubblewpos[i]=rand()%MAP_WIDTH;
-		energybubblehpos[i]=rand()%MAP_HEIGHT;
-		if((map.map_type[energybubblehpos[i]][energybubblewpos[i]]==R_B_||map.map_type[energybubblehpos[i]][energybubblewpos[i]]==Y_B_) && m_bj[energybubblehpos[i]][energybubblewpos[i]] == noprop)
+		energybubblewpos[i] = rand()%MAP_WIDTH;
+		energybubblehpos[i] = rand()%MAP_HEIGHT;
+		if((map.map_type[energybubblehpos[i]][energybubblewpos[i]] == R_B_ || map.map_type[energybubblehpos[i]][energybubblewpos[i]]==Y_B_) && m_bj[energybubblehpos[i]][energybubblewpos[i]] == noprop)
 		{
-			m_bj[energybubblehpos[i]][energybubblewpos[i]]=energybubble;
+			m_bj[energybubblehpos[i]][energybubblewpos[i]] = energybubble;
 			i++;
 		}
 	}
-	int j=0;
+	int j = 0;
 	while (j<EWNUMBER)
 	{
 		energywaterwpos[j]=rand()%MAP_WIDTH;
@@ -118,12 +118,12 @@ void CGameProps::PropInit(HINSTANCE hIns)
 		}
 
 	}
-	int k=0;
-	while (k<RSNUMBER)
+	int k = 0;
+	while (k < RSNUMBER)
 	{
-		rollerskatewpos[k]=rand()%MAP_WIDTH;
-		rollerskatehpos[k]=rand()%MAP_HEIGHT;
-		if((map.map_type[rollerskatehpos[k]][rollerskatewpos[k]]==R_B_||map.map_type[rollerskatehpos[k]][rollerskatewpos[k]]==Y_B_) && m_bj[rollerskatehpos[k]][rollerskatewpos[k]] == noprop)
+		rollerskatewpos[k] = rand()%MAP_WIDTH;
+		rollerskatehpos[k] = rand()%MAP_HEIGHT;
+		if((map.map_type[rollerskatehpos[k]][rollerskatewpos[k]] == R_B_||map.map_type[rollerskatehpos[k]][rollerskatewpos[k]]==Y_B_) && m_bj[rollerskatehpos[k]][rollerskatewpos[k]] == noprop)
 		{
 			m_bj[rollerskatehpos[k]][rollerskatewpos[k]]=rollerskate;
 			k++;

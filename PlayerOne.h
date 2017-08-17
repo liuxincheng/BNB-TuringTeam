@@ -11,9 +11,9 @@ public:
 public:
 	virtual void PlayerInit(HINSTANCE hIns);
 	virtual void PlayerShow(HDC hdc);
-	virtual void PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameProp);
+	virtual void PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameProp,CPlaySound &playSound);
 	virtual void CreateBubble(HINSTANCE hIns,CGameMap &gameMap,list<CBubble*> &lstBubble,CPlaySound &playSound,int x,int y);
-	virtual void WhetherProp(CGameProps &gameprop,int* speed);
+	virtual bool WhetherProp(CGameProps &gameprop);
 };
 
 #endif // !CPLAYERONE_H_

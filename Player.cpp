@@ -14,6 +14,9 @@ CPlayer::CPlayer(void)
 	m_Move_ShowId = 0;
 	m_bMoveFlag = false;
 	m_DieShowID = 0;
+	m_speed_timer = _DEF_PLAYER_SPEED_TIMER;
+	m_bubbleNum = 1;
+	m_bubblePower = 1;
 }
 
 CPlayer::~CPlayer(void)

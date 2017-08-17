@@ -3,6 +3,8 @@
 
 #include "Sys.h"
 
+enum BUBBLE_OWNER {OWNER_PLAYERNO, OWNER_PLAYERONE, OWNER_PLAYERTWO};
+
 class CBubble
 {
 public:
@@ -20,6 +22,7 @@ public:
 	int m_nBubble_power;  // ≈›≈›±¨’®Õ˛¡¶ 1 ~ 4
 	int m_arrfx[4];       // ≈›≈›±¨’®—”…Ï∑∂Œß
 	int m_nBoomShowID;
+	BUBBLE_OWNER m_bubble_owner; // ≈›≈›À˘”–’ﬂ
 private:
 	HBITMAP m_bitmap_bubble;
 	HBITMAP m_bitmap_shadow_bubble;

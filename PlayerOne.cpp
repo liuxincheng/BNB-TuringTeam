@@ -14,7 +14,9 @@ void CPlayerOne::PlayerInit(HINSTANCE hIns)
 	m_player_y = 15;
 	m_Start_nShowID = 0;
 	m_DieShowID = 11;
-	m_speed=1;
+	m_speed_timer = _DEF_PLAYER_SPEED_TIMER;
+	m_bubbleNum = 1;
+	m_bubblePower = 1;
 	m_player_status = BEGIN;
 	m_direction = DOWN;
 	m_hBmpPlayerStart = LoadBitmap(hIns,MAKEINTRESOURCE(IDB_PLAYER_ONE_START));
@@ -73,7 +75,7 @@ void CPlayerOne::PlayerShow(HDC hdc)
 	DeleteObject(hTempDC);
 }
 
-void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop)
+void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop,CPlaySound &playSound)
 {
 	// 根据人物位图下中坐标判断是否有障碍物
 	// 将坐标转换成对应地图数组坐标
@@ -93,8 +95,11 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop)
 		if (this->m_player_x +3 > 15 && 
 			!(gameMap.map_type[temp_y][temp_x - 1] != No && nPicture_x  <= nBlock_x))
 		{
-			this->WhetherProp(gameprop,&m_speed);
-			this->m_player_x -= 5*m_speed;
+			if (this->WhetherProp(gameprop))
+			{
+				playSound.Play(GET_TOOL_SOUND);
+			}
+			this->m_player_x -= 5;
 		}
 	}
 
@@ -106,8 +111,11 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop)
 		if (this->m_player_x +3 < 20 + 600 - 48 && 
 			!(gameMap.map_type[temp_y][temp_x + 1] != No && nPicture_x  >= nBlock_x))
 		{
-			this->WhetherProp(gameprop,&m_speed);
-			this->m_player_x += 5*m_speed;
+			if (this->WhetherProp(gameprop))
+			{
+				playSound.Play(GET_TOOL_SOUND);
+			}
+			this->m_player_x += 5;
 		}
 	}
 
@@ -119,8 +127,11 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop)
 		if (this->m_player_y +3> 15 && 
 			!(gameMap.map_type[temp_y - 1][temp_x] != No && nPicture_y  <= nBlock_y))
 		{
-			this->WhetherProp(gameprop,&m_speed);
-			this->m_player_y -= 5*m_speed;
+			if (this->WhetherProp(gameprop))
+			{
+				playSound.Play(GET_TOOL_SOUND);
+			}
+			this->m_player_y -= 5;
 		}
 	}
 
@@ -132,8 +143,11 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop)
 		if (this->m_player_y +3 < 41 + 520 - 64 && 
 			!(gameMap.map_type[temp_y + 1][temp_x] != No && nPicture_y  >= nBlock_y))
 		{
-			this->WhetherProp(gameprop,&m_speed);
-			this->m_player_y += 5*m_speed;
+			if (this->WhetherProp(gameprop))
+			{
+				playSound.Play(GET_TOOL_SOUND);
+			}
+			this->m_player_y += 5;
 		}
 	}
 }
@@ -159,7 +173,8 @@ void CPlayerOne::CreateBubble(HINSTANCE hIns,CGameMap &gameMap,list<CBubble*> &l
 			temp_y = temp_y * 40 + 41 - 1;
 			// 创建泡泡
 			CBubble* bubble = new CBubble;
-			bubble->BubbleInit(hIns,temp_x,temp_y,4);
+			bubble->BubbleInit(hIns,temp_x,temp_y,m_bubblePower);
+			bubble->m_bubble_owner = OWNER_PLAYERONE;
 			lstBubble.push_back(bubble);
 
 			// 放置泡泡音效
@@ -168,33 +183,63 @@ void CPlayerOne::CreateBubble(HINSTANCE hIns,CGameMap &gameMap,list<CBubble*> &l
 	}
 }
 
-void CPlayerOne::WhetherProp(CGameProps &gameprop,int* speed)
+bool CPlayerOne::WhetherProp(CGameProps &gameprop)
 {
 	// 将坐标转换成对应地图数组坐标
 	int x_temp = (m_player_x - 20 + 24) / 40;
 	int y_temp = (m_player_y + 64 - 41) / 40;
+	bool flag = false; // 判断是否吃到道具
 	switch (gameprop.m_bj[y_temp][x_temp])
 	{
 	case noprop:
-		*speed=1;
+		flag = false;
 		break;
 	case energybubble:
-		gameprop.m_bj[y_temp][x_temp]=noprop;
+		gameprop.m_bj[y_temp][x_temp] = noprop;
+		// 改变放置泡泡个数
+		if (m_bubbleNum < _DEF_BUBBLE_NUM_MAX)
+		{
+			m_bubbleNum++;
+		}
+		flag = true;
 		break;
 	case energywater:
-		gameprop.m_bj[y_temp][x_temp]=noprop;
+		{
+			gameprop.m_bj[y_temp][x_temp] = noprop;
+			// 改变泡泡的威力
+			if (m_bubblePower < _DEF_BUBBLE_POWER_MAX)
+			{
+				m_bubblePower++;
+			}
+			flag = true;
+		}
 		break;
 	case rollerskate:
-		gameprop.m_bj[y_temp][x_temp]=noprop;
-		(*speed)++;
+		{
+			gameprop.m_bj[y_temp][x_temp] = noprop;
+			// 改变移动速度
+			if (m_speed_timer > 10)
+			{
+				m_speed_timer -= 10;
+			}
+			flag = true;
+		}
 		break;
 	case redhead:
-		gameprop.m_bj[y_temp][x_temp]=noprop;
-		*speed=5;
+		gameprop.m_bj[y_temp][x_temp] = noprop;
+		m_speed_timer = 10;
 		break;
 	case powerball:
-		gameprop.m_bj[y_temp][x_temp]=noprop;
-
+		gameprop.m_bj[y_temp][x_temp] = noprop;
+		// 泡泡威力为最大值
+		m_bubblePower = _DEF_BUBBLE_POWER_MAX;
+		flag = true;
 		break;
 	}
+
+	if (flag)
+	{
+		return true;
+	}
+	return false;
 }
