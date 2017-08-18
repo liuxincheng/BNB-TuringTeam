@@ -57,7 +57,7 @@ void CTwoGameScene::TwoGameSceneInit(HINSTANCE hIns, HWND hWnd)
 	gameMap.MapInit(hIns);
 
 	//初始化道具
-	prop.PropInit(hIns);
+	prop.PropInit(hIns,gameMap);
 
 	// 初始化游戏人物
 	playerOne.PlayerInit(hIns);

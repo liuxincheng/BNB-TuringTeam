@@ -2,7 +2,7 @@
 
 CGameProps::CGameProps()
 {
-	m_bitmap_energybubble=NULL;
+	m_bitmap_energybubble = NULL;
 	m_bitmap_energywater = NULL;
 	m_bitmap_rollerskate = NULL;
 	m_bitmap_redhead = NULL;
@@ -12,7 +12,7 @@ CGameProps::CGameProps()
 	{
 		for (int j = 0; j < MAP_WIDTH; j++)
 		{
-			m_bj[i][j]=noprop;
+			m_bj[i][j] = noprop;
 		}
 	}
 	for (int i = 0; i < EBNUMBER; i++)
@@ -51,49 +51,24 @@ CGameProps::~CGameProps()
 	DeleteObject(m_bitmap_rollerskate);
 	DeleteObject(m_bitmap_redhead);
 	DeleteObject(m_bitmap_powerball);
-	m_bitmap_energybubble=NULL;
-	m_bitmap_energywater=NULL;
-	m_bitmap_rollerskate=NULL;
-	m_bitmap_redhead=NULL;
-	m_bitmap_powerball=NULL;
+	m_bitmap_energybubble = NULL;
+	m_bitmap_energywater = NULL;
+	m_bitmap_rollerskate = NULL;
+	m_bitmap_redhead = NULL;
+	m_bitmap_powerball = NULL;
 }
 
-void CGameProps::PropInit(HINSTANCE hIns)
+void CGameProps::PropInit(HINSTANCE hIns,CGameMap& map)
 {
 	// 设置随机数种子
 	srand((unsigned int)time(0));
 	//加载图片
-	m_bitmap_energybubble=::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_WATER_BUBBLE));
-	m_bitmap_energywater=::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_POWER_WATER));
-	m_bitmap_rollerskate=::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_SPEED_SHOE));
-	m_bitmap_redhead=::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_MAX_SPEED));
-	m_bitmap_powerball=::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_MAX_POWER));
+	m_bitmap_energybubble = ::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_WATER_BUBBLE));
+	m_bitmap_energywater = ::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_POWER_WATER));
+	m_bitmap_rollerskate = ::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_SPEED_SHOE));
+	m_bitmap_redhead = ::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_MAX_SPEED));
+	m_bitmap_powerball = ::LoadBitmap(hIns,MAKEINTRESOURCE(IDB_MAX_POWER));
 	m_nShowID = 2;
-	// 加载地图数据
-	FILE *fp = NULL;
-	fopen_s(&fp,"mapData/map_village1.txt","r");
-	// 打开文件成功
-	if (fp != NULL)
-	{
-		for (int i = 0; i < MAP_HEIGHT; i++)
-		{
-			for (int j = 0; j < MAP_WIDTH; j++)
-			{
-				fscanf_s(fp,"%d",&map.map_type[i][j]);
-			}
-		}
-
-		fclose(fp);
-	}
-	// 打开文件失败
-	else
-	{
-		if ( MessageBox( NULL, TEXT("地图初始化失败!"), TEXT("加载程序错误"), MB_OK | MB_ICONERROR ) == IDOK )
-		{
-			PostQuitMessage(0);
-		}
-	}
-
 	// 随机初始化道具位置
 	int i = 0;
 	while (i < EBNUMBER)
@@ -107,11 +82,11 @@ void CGameProps::PropInit(HINSTANCE hIns)
 		}
 	}
 	int j = 0;
-	while (j<EWNUMBER)
+	while (j < EWNUMBER)
 	{
-		energywaterwpos[j]=rand()%MAP_WIDTH;
-		energywaterhpos[j]=rand()%MAP_HEIGHT;
-		if((map.map_type[energywaterhpos[j]][energywaterwpos[j]]==R_B_||map.map_type[energywaterhpos[j]][energywaterwpos[j]]==Y_B_) && m_bj[energywaterhpos[j]][energywaterwpos[j]] == noprop)
+		energywaterwpos[j] = rand()%MAP_WIDTH;
+		energywaterhpos[j] = rand()%MAP_HEIGHT;
+		if((map.map_type[energywaterhpos[j]][energywaterwpos[j]] == R_B_||map.map_type[energywaterhpos[j]][energywaterwpos[j]] == Y_B_) && m_bj[energywaterhpos[j]][energywaterwpos[j]] == noprop)
 		{
 			m_bj[energywaterhpos[j]][energywaterwpos[j]]=energywater;
 			j++;
@@ -123,30 +98,30 @@ void CGameProps::PropInit(HINSTANCE hIns)
 	{
 		rollerskatewpos[k] = rand()%MAP_WIDTH;
 		rollerskatehpos[k] = rand()%MAP_HEIGHT;
-		if((map.map_type[rollerskatehpos[k]][rollerskatewpos[k]] == R_B_||map.map_type[rollerskatehpos[k]][rollerskatewpos[k]]==Y_B_) && m_bj[rollerskatehpos[k]][rollerskatewpos[k]] == noprop)
+		if((map.map_type[rollerskatehpos[k]][rollerskatewpos[k]] == R_B_||map.map_type[rollerskatehpos[k]][rollerskatewpos[k]] == Y_B_) && m_bj[rollerskatehpos[k]][rollerskatewpos[k]] == noprop)
 		{
-			m_bj[rollerskatehpos[k]][rollerskatewpos[k]]=rollerskate;
+			m_bj[rollerskatehpos[k]][rollerskatewpos[k]] = rollerskate;
 			k++;
 		}
 
 	}
-	int l=0;
-	while (l<RHNUMBER)
+	int l = 0;
+	while (l < RHNUMBER)
 	{
-		edheadwpos[l]=rand()%MAP_WIDTH;
-		edheadhpos[l]=rand()%MAP_HEIGHT;
-		if((map.map_type[edheadhpos[l]][edheadwpos[l]]==R_B_ || map.map_type[edheadhpos[l]][edheadwpos[l]]==Y_B_) && m_bj[edheadhpos[l]][edheadwpos[l]] == noprop)
+		edheadwpos[l] = rand()%MAP_WIDTH;
+		edheadhpos[l] = rand()%MAP_HEIGHT;
+		if((map.map_type[edheadhpos[l]][edheadwpos[l]] == R_B_ || map.map_type[edheadhpos[l]][edheadwpos[l]] == Y_B_) && m_bj[edheadhpos[l]][edheadwpos[l]] == noprop)
 		{
 			m_bj[edheadhpos[l]][edheadwpos[l]] = redhead;
 			l++;
 		}
 	}
-	int m=0;
-	while (m<PBNUMBER)
+	int m = 0;
+	while (m < PBNUMBER)
 	{
-		powerballwpos[m]=rand()%MAP_WIDTH;
-		powerballhpos[m]=rand()%MAP_HEIGHT;
-		if((map.map_type[powerballhpos[m]][powerballwpos[m]]==R_B_ || map.map_type[powerballhpos[m]][powerballwpos[m]]==Y_B_) && m_bj[powerballhpos[m]][powerballwpos[m]] == noprop)
+		powerballwpos[m] = rand()%MAP_WIDTH;
+		powerballhpos[m] = rand()%MAP_HEIGHT;
+		if((map.map_type[powerballhpos[m]][powerballwpos[m]] == R_B_ || map.map_type[powerballhpos[m]][powerballwpos[m]] == Y_B_) && m_bj[powerballhpos[m]][powerballwpos[m]] == noprop)
 		{
 			m_bj[powerballhpos[m]][powerballwpos[m]] = powerball;
 			m++;
@@ -160,7 +135,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 	HDC hdcMem = CreateCompatibleDC(hdc);
 	int x = 0;
 	int y = 0;
-	for (int i=0;i<EBNUMBER;i++)
+	for (int i = 0; i < EBNUMBER; i++)
 	{
 		x = energybubblewpos[i] * 40 + 20;
 		y = energybubblehpos[i] * 40 + 41;
@@ -170,7 +145,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 			TransparentBlt(hdc,x,y,42,45,hdcMem,(2-m_nShowID)*42,0,42,45,RGB(255,0,255));
 		}
 	}
-	for (int j=0;j<EWNUMBER;j++)
+	for (int j = 0; j < EWNUMBER; j++)
 	{
 		x = energywaterwpos[j] * 40 + 20;
 		y = energywaterhpos[j] * 40 + 41;
@@ -180,7 +155,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 			TransparentBlt(hdc,x,y,42,45,hdcMem,(2-m_nShowID)*42,0,42,45,RGB(255,0,255));
 		}
 	}
-	for (int k=0;k<RSNUMBER;k++)
+	for (int k = 0; k < RSNUMBER; k++)
 	{
 
 		x = rollerskatewpos[k] * 40 + 20;
@@ -191,7 +166,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 			TransparentBlt(hdc,x,y,42,45,hdcMem,(2-m_nShowID)*42,0,42,45,RGB(255,0,255));
 		}
 	}
-	for (int m=0;m<RHNUMBER;m++)
+	for (int m = 0; m < RHNUMBER; m++)
 	{
 
 		x = edheadwpos[m] * 40 + 20;
@@ -202,7 +177,7 @@ void CGameProps::PropPositionShow(HDC hdc)
 			TransparentBlt(hdc,x,y,42,45,hdcMem,(2-m_nShowID)*42,0,42,45,RGB(255,0,255));
 		}
 	}
-	for (int n=0;n<PBNUMBER;n++)
+	for (int n = 0; n < PBNUMBER; n++)
 	{
 
 		x = powerballwpos[n] * 40 + 20;

@@ -29,9 +29,9 @@ public:
 	int	edheadhpos[RHNUMBER];
 	int	powerballwpos[PBNUMBER];
 	int	powerballhpos[PBNUMBER];
-	CGameMap map;
+	
 public:
-	void PropInit(HINSTANCE hIns);
+	void PropInit(HINSTANCE hIns, CGameMap& map);
 	void PropPositionShow(HDC hdc);
 };
 

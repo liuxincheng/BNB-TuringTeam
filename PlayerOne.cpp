@@ -195,13 +195,15 @@ bool CPlayerOne::WhetherProp(CGameProps &gameprop)
 		flag = false;
 		break;
 	case energybubble:
-		gameprop.m_bj[y_temp][x_temp] = noprop;
-		// 改变放置泡泡个数
-		if (m_bubbleNum < _DEF_BUBBLE_NUM_MAX)
 		{
-			m_bubbleNum++;
+			gameprop.m_bj[y_temp][x_temp] = noprop;
+			// 改变放置泡泡个数
+			if (m_bubbleNum < _DEF_BUBBLE_NUM_MAX)
+			{
+				m_bubbleNum++;
+			}
+			flag = true;
 		}
-		flag = true;
 		break;
 	case energywater:
 		{
@@ -226,14 +228,18 @@ bool CPlayerOne::WhetherProp(CGameProps &gameprop)
 		}
 		break;
 	case redhead:
-		gameprop.m_bj[y_temp][x_temp] = noprop;
-		m_speed_timer = 10;
+		{
+			gameprop.m_bj[y_temp][x_temp] = noprop;
+			m_speed_timer = 10;
+		}
 		break;
 	case powerball:
-		gameprop.m_bj[y_temp][x_temp] = noprop;
-		// 泡泡威力为最大值
-		m_bubblePower = _DEF_BUBBLE_POWER_MAX;
-		flag = true;
+		{
+			gameprop.m_bj[y_temp][x_temp] = noprop;
+			// 泡泡威力为最大值
+			m_bubblePower = _DEF_BUBBLE_POWER_MAX;
+			flag = true;
+		}
 		break;
 	}
 
