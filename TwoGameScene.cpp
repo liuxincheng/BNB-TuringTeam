@@ -142,7 +142,7 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 {
 	switch (nKey)
 	{
-		// 关闭音效
+	// 关闭音效
 	case VK_F7:
 		if (playSound.isKeyToStop)
 		{
@@ -155,8 +155,8 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 			KillTimer(m_twoGameWnd,STOPSOUND_TIMER_ID);
 		}		
 		break;
-		// 玩家一放置泡泡
-	case VK_SHIFT :
+	// 玩家一放置泡泡
+	case  VK_SPACE:
 		// 遍历链表 看玩家一已放置的泡泡
 		{
 			auto ite = m_lstBubble.begin();
@@ -175,8 +175,8 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 			}
 		}
 		break;
-		// 玩家二放置泡泡
-	case VK_SPACE:
+	// 玩家二放置泡泡
+	case VK_SHIFT:
 		{
 			// 遍历链表 看玩家二已放置的泡泡
 			auto ite = m_lstBubble.begin();
@@ -196,10 +196,11 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 		}
 		break;
 		// 人物一移动
-	case VK_LEFT:
-	case VK_RIGHT:
-	case VK_UP:
-	case VK_DOWN:
+	
+	case 'W':
+	case 'A':
+	case 'S':
+	case 'D':
 		{
 			// 将移动标记置为true
 			playerOne.m_bMoveFlag = true;
@@ -207,10 +208,10 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 		}
 		break;
 		// 人物二移动
-	case 'W':
-	case 'A':
-	case 'S':
-	case 'D':
+	case VK_LEFT:
+	case VK_RIGHT:
+	case VK_UP:
+	case VK_DOWN:
 		{
 			// 将移动标记置为true
 			playerTwo.m_bMoveFlag = true;
@@ -222,13 +223,13 @@ void CTwoGameScene::OnKeyDown(WPARAM nKey)
 
 void CTwoGameScene::OnKeyUp(WPARAM nKey)
 {
-	if (nKey == VK_LEFT || nKey == VK_RIGHT || nKey == VK_UP || VK_DOWN)
+	if (nKey == 'W' || nKey == 'A' || nKey == 'S' || 'D')
 	{
 		playerOne.m_Move_ShowId = 0;
 		playerOne.m_bMoveFlag = false;
 	}
 
-	if (nKey == 'W' || nKey == 'A' || nKey == 'S' || 'D')
+	if (nKey == VK_LEFT || nKey == VK_RIGHT || nKey == VK_UP || VK_DOWN)
 	{
 		playerTwo.m_Move_ShowId = 0;
 		playerTwo.m_bMoveFlag = false;
@@ -323,23 +324,21 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 		}
 		else
 		{
-			if (GetAsyncKeyState(VK_LEFT))
+			if (GetAsyncKeyState('A'))
 			{
-				playerOne.PlayerMove(VK_LEFT,gameMap,prop,playSound);
-
+				playerOne.PlayerMove('A',gameMap,prop,playSound);
 			}
-			if (GetAsyncKeyState(VK_RIGHT))
+			if (GetAsyncKeyState('D'))
 			{
-				playerOne.PlayerMove(VK_RIGHT,gameMap,prop,playSound);
-
+				playerOne.PlayerMove('D',gameMap,prop,playSound);
 			}
-			if (GetAsyncKeyState(VK_UP))
+			if (GetAsyncKeyState('W'))
 			{
-				playerOne.PlayerMove(VK_UP,gameMap,prop,playSound);
+				playerOne.PlayerMove('W',gameMap,prop,playSound);
 			}
-			if (GetAsyncKeyState(VK_DOWN))
+			if (GetAsyncKeyState('S'))
 			{
-				playerOne.PlayerMove(VK_DOWN,gameMap,prop,playSound);
+				playerOne.PlayerMove('S',gameMap,prop,playSound);
 			}
 			one_flag = 10;
 		}
@@ -350,22 +349,23 @@ void CTwoGameScene::OnTwoGameRun(WPARAM nTimerID)
 		}
 		else
 		{
-			if (GetAsyncKeyState('A'))
+			if (GetAsyncKeyState(VK_LEFT))
 			{
-				playerTwo.PlayerMove('A',gameMap,prop,playSound);
-			}
+				playerTwo.PlayerMove(VK_LEFT,gameMap,prop,playSound);
 
-			if (GetAsyncKeyState('D'))
-			{
-				playerTwo.PlayerMove('D',gameMap,prop,playSound);
 			}
-			if (GetAsyncKeyState('W'))
+			if (GetAsyncKeyState(VK_RIGHT))
 			{
-				playerTwo.PlayerMove('W',gameMap,prop,playSound);
+				playerTwo.PlayerMove(VK_RIGHT,gameMap,prop,playSound);
+
 			}
-			if (GetAsyncKeyState('S'))
+			if (GetAsyncKeyState(VK_UP))
 			{
-				playerTwo.PlayerMove('S',gameMap,prop,playSound);
+				playerTwo.PlayerMove(VK_UP,gameMap,prop,playSound);
+			}
+			if (GetAsyncKeyState(VK_DOWN))
+			{
+				playerTwo.PlayerMove(VK_DOWN,gameMap,prop,playSound);
 			}
 			two_flag = 10;
 		}

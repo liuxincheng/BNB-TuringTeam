@@ -243,25 +243,21 @@ void CGameMap::BlastBlock_One(int i, int j, int *arr)
 	if ( i < MAP_HEIGHT - 1 && map_type[i+1][j] <= Box && map_type[i+1][j] != No)
 	{
 		map_type[i+1][j] = No;
-	//	arr[3] = 1;
 	}
 	// ещещ ║Ш
 	if ( i > 0 && map_type[i-1][j] <= Box && map_type[i-1][j] != No)
 	{
 		map_type[i-1][j] = No;
-	//	arr[2] = 1;
 	}
 	// ещещ ║Щ
 	if ( j < MAP_WIDTH - 1 && map_type[i][j+1] <= Box && map_type[i][j+1] != No)
 	{
 		map_type[i][j+1] = No;
-	//	arr[1] = 1;
 	}
 	// ещещ ║Э
 	if ( j > 0 && map_type[i][j-1] <= Box && map_type[i][j-1] != No)
 	{
 		map_type[i][j-1] = No;
-	//	arr[0] = 1;
 	}
 }
 

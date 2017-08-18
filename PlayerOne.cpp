@@ -87,7 +87,7 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop,CPlayS
 	int nBlock_x = 0;
 	int nBlock_y = 0;
 	// 移动
-	if (FX == VK_LEFT)
+	if (FX == 'A')
 	{
 		m_direction = LEFT;
 		nPicture_x = m_player_x;                   // 人物位图最左侧位置
@@ -103,7 +103,7 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop,CPlayS
 		}
 	}
 
-	if (FX == VK_RIGHT)
+	if (FX == 'D')
 	{
 		m_direction = RIGHT;
 		nPicture_x = m_player_x + 48;           // 人物位图最右侧位置
@@ -119,7 +119,7 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop,CPlayS
 		}
 	}
 
-	if (FX == VK_UP)
+	if (FX == 'W')
 	{
 		m_direction = UP;
 		nPicture_y = m_player_y + 32;                // 人物位图最上方位置
@@ -135,7 +135,7 @@ void CPlayerOne::PlayerMove(int FX,CGameMap &gameMap,CGameProps &gameprop,CPlayS
 		}
 	}
 
-	if (FX == VK_DOWN)
+	if (FX == 'S')
 	{
 		m_direction = DOWN;
 		nPicture_y = m_player_y + 68;           // 人物位图最下方位置

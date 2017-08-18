@@ -60,9 +60,6 @@
     <ClInclude Include="PlayerTwo.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameTools.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -102,9 +99,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PlayerTwo.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTools.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

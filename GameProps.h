@@ -6,7 +6,6 @@
 
 enum PropType { noprop = 10, energybubble, energywater, rollerskate, redhead, powerball };
 
-
 class CGameProps
 {
 public:
